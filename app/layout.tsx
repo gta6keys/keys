@@ -1,23 +1,22 @@
 import type { Metadata } from 'next';
 import { LanguageProvider } from '@/components/language-provider';
 import './globals.css';
-
 export const metadata: Metadata = {
-  metadataBase: new URL('https://gta6mod.github.io/Gta6mod/'),
-  title: 'Gta6mod – Vice City Mods Directory, Gameplay & Credits',
+  metadataBase: new URL('https://gta6keys.github.io/keys/'),
+  title: 'GTA 6 Digital Code Access – PS5 & Xbox Series X|S | gta6keys',
   description:
-    'Explore GTA 6 Vice City mods, vehicle packs, graphics shaders, gameplay videos, creator credits, and an XML sitemap on this independent fan archive.',
+    'Claim GTA 6 digital codes for PlayStation 5 and Xbox Series X|S. Includes Vice City edition details, verification Q&A, and XML sitemap index.',
   keywords: [
-    'GTA 6 mods',
-    'GTA 6 Vice City mods',
-    'GTA 6 gameplay',
-    'GTA 6 vehicle mods',
-    'GTA 6 shaders',
-    'Vice City modding',
+    'GTA 6 code',
+    'GTA 6 PS5 code',
+    'GTA 6 Xbox Series X code',
+    'Grand Theft Auto VI digital code',
+    'GTA 6 Vice City',
+    'gta6keys',
   ],
-  authors: [{ name: 'Gta6mod' }],
-  creator: 'Gta6mod',
-  publisher: 'Gta6mod',
+  authors: [{ name: 'gta6keys' }],
+  creator: 'gta6keys',
+  publisher: 'gta6keys',
   robots: {
     index: true,
     follow: true,
@@ -26,19 +25,19 @@ export const metadata: Metadata = {
     'max-video-preview': -1,
   },
   openGraph: {
-    title: 'Gta6mod – Vice City Mods Directory, Gameplay & Credits',
+    title: 'GTA 6 Digital Code Access – PS5 & Xbox Series X|S | gta6keys',
     description:
-      'Explore GTA 6 Vice City mods, gameplay showcases, creator credits, official media references, and a crawler-ready XML sitemap.',
+      'Claim GTA 6 digital codes for PlayStation 5 and Xbox Series X|S with Vice City cover preview, SEO Q&A, and crawler-ready XML sitemap.',
     type: 'website',
-    siteName: 'Gta6mod',
-    url: 'https://gta6mod.github.io/Gta6mod/',
+    siteName: 'gta6keys',
+    url: 'https://gta6keys.github.io/keys/',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Gta6mod – Vice City Mods Directory, Gameplay & Credits',
+    title: 'GTA 6 Digital Code Access – PS5 & Xbox Series X|S | gta6keys',
     description:
-      'Explore GTA 6 Vice City mods, gameplay showcases, creator credits, official media references, and an XML sitemap.',
+      'Claim GTA 6 digital codes for PlayStation 5 and Xbox Series X|S with verification Q&A and XML sitemap.',
   },
   alternates: {
     canonical: '/',
@@ -49,10 +48,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Gta6mod',
+    name: 'gta6keys',
     description:
       'Community modding directory, YouTube GTA 6 gameplay index, and creator credits repository. Independent platform not affiliated with Rockstar Games or Grand Theft Auto VI.',
-    url: process.env.APP_URL || 'https://gta6mod.github.io/Gta6mod/',
+    url: process.env.APP_URL || 'https://gta6keys.github.io/keys/',
     potentialAction: {
       '@type': 'SearchAction',
       target: '{search_term_string}',
@@ -70,7 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="sitemap"
           type="application/xml"
           title="Sitemap"
-          href="/Gta6mod/sitemap.xml"
+          href="/gta6keys/sitemap.xml"
         />
         <script
           type="application/ld+json"
@@ -79,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body
         suppressHydrationWarning
-        className="bg-[#0A0A0A] text-[#F5F5F5] font-sans antialiased selection:bg-[#EAB308] selection:text-[#0A0A0A] min-h-screen"
+        className="bg-[#160726] text-[#F9F2FF] font-sans antialiased selection:bg-[#FF2E88] selection:text-[#160726] min-h-screen"
       >
         <LanguageProvider>{children}</LanguageProvider>
       </body>

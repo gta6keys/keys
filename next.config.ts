@@ -1,7 +1,6 @@
-import type {NextConfig} from 'next';
+import type { NextConfig } from 'next';
 
-const isProd = process.env.NODE_ENV === 'production';
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? (isProd ? '/Gta6mod' : '');
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -27,7 +26,7 @@ const nextConfig: NextConfig = {
     ],
   },
   transpilePackages: ['motion'],
-  webpack: (config, {dev}) => {
+  webpack: (config, { dev }) => {
     if (dev && process.env.DISABLE_HMR === 'true') {
       config.watchOptions = {
         ignored: /.*/,

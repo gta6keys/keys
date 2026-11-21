@@ -38,7 +38,7 @@ jobs:
       - name: Build with Next.js
         run: npx next build
         env:
-          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path || '/Gta6mod' }}
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           CI: 'false'
           NEXT_TELEMETRY_DISABLED: '1'
 
