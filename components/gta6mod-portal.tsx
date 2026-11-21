@@ -87,7 +87,7 @@ function XboxIcon({ className = 'w-5 h-5' }: { className?: string }) {
   );
 }
 
-export function Gta6keysPortal() {
+export function Gta6modPortal() {
   const [selectedPlatform, setSelectedPlatform] = useState<ConsolePlatform>('ps5');
   const [lockerOpen, setLockerOpen] = useState(false);
   const [openFaqId, setOpenFaqId] = useState<string | null>(SEO_FAQ_ITEMS[0].id);
@@ -543,3 +543,6 @@ export function Gta6keysPortal() {
     </div>
   );
 }
+
+export const Gta6keysPortal = Gta6modPortal;
+export default Gta6modPortal;

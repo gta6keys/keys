@@ -521,3 +521,6 @@ export function ViceCityCodePage() {
     </div>
   );
 }
+
+export const Gta6modPortal = ViceCityCodePage;
+export default ViceCityCodePage;
