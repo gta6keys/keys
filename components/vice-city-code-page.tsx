@@ -196,7 +196,7 @@ export function ViceCityCodePage() {
 
                 <div className="mb-8">
                   <div className="font-mono text-xs uppercase tracking-wider text-[#FF5CA8] mb-3">
-                    01 // SELECT CONSOLE PLATFORM
+                    01 {'//'} SELECT CONSOLE PLATFORM
                   </div>
 
                   <div
@@ -260,7 +260,7 @@ export function ViceCityCodePage() {
 
                 <div className="mb-8">
                   <div className="font-mono text-xs uppercase tracking-wider text-[#FF5CA8] mb-3">
-                    02 // INITIATE CODE RELEASE
+                    02 {'//'} INITIATE CODE RELEASE
                   </div>
 
                   <button
@@ -275,7 +275,7 @@ export function ViceCityCodePage() {
                           CLAIM THE CODE
                         </span>
                         <span className="font-mono text-[11px] uppercase tracking-widest mt-1.5 font-bold">
-                          SELECTED: {platformLabel} // OPENS CONTENT LOCKER
+                          SELECTED: {platformLabel} {'//'} OPENS CONTENT LOCKER
                         </span>
                       </span>
                     </span>
@@ -305,7 +305,7 @@ export function ViceCityCodePage() {
 
             <div className="lg:col-span-5 bg-[#230B3B] p-6 sm:p-10 flex flex-col items-center justify-between gap-6">
               <div className="w-full flex items-center justify-between font-mono text-[11px] uppercase text-[#E3CEF5] pb-3 border-b border-[#4D1F6E]">
-                <span>VICE CITY // LEONIDA EDITION</span>
+                <span>VICE CITY {'//'} LEONIDA EDITION</span>
                 <span className="text-[#FF2E88]">PS5 · XBOX</span>
               </div>
 

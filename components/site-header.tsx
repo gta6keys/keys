@@ -52,7 +52,7 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
             <span className="truncate">{t('hero.disclaimer')}</span>
           </div>
           <div className="hidden sm:flex items-center gap-4 shrink-0">
-            <span>LEONIDA // VICE CITY ARCHIVE</span>
+            <span>LEONIDA {'//'} VICE CITY ARCHIVE</span>
             <Link href="/sitemap.xml" target="_blank" className="text-[#EAB308] hover:underline">
               /sitemap.xml
             </Link>
@@ -70,7 +70,7 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
               VI
             </span>
             <span className="font-display text-2xl font-bold uppercase tracking-wider text-[#F5F5F5]">
-              GTA6MOD
+              gta6keys
             </span>
           </Link>
 
@@ -87,11 +87,10 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center justify-center px-5 border-r border-[#262626] font-mono text-xs uppercase tracking-wider whitespace-nowrap ${
-                    active
+                  className={`flex items-center justify-center px-5 border-r border-[#262626] font-mono text-xs uppercase tracking-wider whitespace-nowrap ${active
                       ? 'bg-[#EAB308] text-[#0A0A0A] font-semibold'
                       : 'bg-[#0A0A0A] text-[#F5F5F5] hover:bg-[#121212]'
-                  }`}
+                    }`}
                 >
                   {label}
                 </Link>
@@ -114,11 +113,10 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
                     key={lang.code}
                     type="button"
                     onClick={() => setLocale(lang.code as LocaleCode)}
-                    className={`px-2 py-1 text-[11px] font-mono uppercase cursor-pointer ${
-                      isCurrent
+                    className={`px-2 py-1 text-[11px] font-mono uppercase cursor-pointer ${isCurrent
                         ? 'bg-[#EAB308] text-[#0A0A0A] font-semibold'
                         : 'text-neutral-300 hover:text-white'
-                    }`}
+                      }`}
                   >
                     {lang.label}
                   </button>
@@ -161,11 +159,10 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`px-4 py-3 border-b border-r border-[#262626] font-mono text-xs uppercase tracking-wider ${
-                    active
+                  className={`px-4 py-3 border-b border-r border-[#262626] font-mono text-xs uppercase tracking-wider ${active
                       ? 'bg-[#EAB308] text-[#0A0A0A] font-semibold'
                       : 'text-[#F5F5F5] hover:bg-[#121212]'
-                  }`}
+                    }`}
                 >
                   {label}
                 </Link>

@@ -65,7 +65,7 @@ export function ContentLockerModal({
                       id="locker-modal-title"
                       className="font-mono text-xs uppercase tracking-wider text-[#F5F5F5] truncate"
                     >
-                      {isVice ? 'CODE VERIFICATION GATE' : 'MOD LAUNCH GATE'} // {packageTitle}
+                      {isVice ? 'CODE VERIFICATION GATE' : 'MOD LAUNCH GATE'} {'//'} {packageTitle}
                     </span>
                   </div>
 
@@ -196,7 +196,7 @@ export function StartGameModButton({
             {label}
           </span>
           <span className="font-mono text-[10px] uppercase tracking-widest mt-1 font-semibold">
-            PS5 &amp; XBOX SERIES X|S // CLICK TO VERIFY
+            PS5 &amp; XBOX SERIES X|S {'//'} CLICK TO VERIFY
           </span>
         </span>
       </span>
