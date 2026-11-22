@@ -6,7 +6,7 @@ import { SiteHeader } from '@/components/site-header';
 import { GameplayYoutubeSection } from '@/components/gameplay-youtube-section';
 
 export const metadata: Metadata = {
-  title: 'YouTube Gameplay & Engine Analysis | Gta6mod',
+  title: 'YouTube Gameplay & Engine Analysis | gta6keys',
   description:
     'Watch curated GTA 6 gameplay videos and explore community analysis of shaders, vehicles, maps, and the RAGE engine.',
   alternates: {
@@ -31,7 +31,7 @@ export default function GameplayPage() {
             </span>
           </div>
           <Link href="/" className="text-[#EAB308] hover:underline uppercase">
-            GTA6MOD INDEX →
+            gta6keys INDEX →
           </Link>
         </div>
       </footer>

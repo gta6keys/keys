@@ -1,10 +1,10 @@
-# Gta6mod — Vice City Modding Directory & Media Archive
+# gta6keys — Vice City Modding Directory & Media Archive
 
-Production portal: [https://gta6mod.github.io/Gta6mod/](https://gta6mod.github.io/Gta6mod/)
+Production portal: [https://gta6keys.github.io/gta6keys/](https://gta6keys.github.io/gta6keys/)
 
 ## Overview
 
-Gta6mod is an independent community modding directory, 4K media archive, gameplay analysis index, creator attribution ledger, and multi-shard XML sitemap engine (`en`, `es`, `fr`, `pt`).
+gta6keys is an independent community modding directory, 4K media archive, gameplay analysis index, creator attribution ledger, and multi-shard XML sitemap engine (`en`, `es`, `fr`, `pt`).
 
 ## Local Development
 

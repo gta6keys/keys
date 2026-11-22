@@ -9,7 +9,7 @@ interface DynamicStorePayload {
   sitemapEntries: SitemapUrlEntry[];
 }
 
-const STORE_FILE_PATH = path.join(os.tmpdir(), 'gta6mod-dynamic-store.json');
+const STORE_FILE_PATH = path.join(os.tmpdir(), 'gta6keys-dynamic-store.json');
 
 let memoryStore: DynamicStorePayload = {
   mods: [],

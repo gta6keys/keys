@@ -1,34 +1,7 @@
-import {
-  INITIAL_CREDITS,
-  INITIAL_MODS,
-  MOD_CATEGORIES,
-  YOUTUBE_GAMEPLAY_VIDEOS,
-} from './mods-repository';
+import { INITIAL_MODS } from './mods-repository';
+import { getAllPseoKeyPages } from './pseo-catalog';
+import { SITE_CONFIG } from './site-config';
 import { SitemapEntityType, SitemapShardInfo, SitemapUrlEntry } from './types';
-
-const SYNTHETIC_MOD_PREFIXES = [
-  'vice-beach',
-  'leonida-keys',
-  'ocean-drive',
-  'starfish-island',
-  'port-gellhorn',
-  'grassrivers',
-  'washington-beach',
-  'little-haiti',
-  'downtown-vice',
-  'ambrosia-bay',
-];
-
-const SYNTHETIC_MOD_TYPES: {
-  category: 'vehicles' | 'shaders' | 'map-expansions' | 'characters' | 'scripts';
-  noun: string;
-}[] = [
-  { category: 'vehicles', noun: 'twin-turbo-widebody-coupe' },
-  { category: 'shaders', noun: 'rtgi-sunset-path-tracer-lut' },
-  { category: 'map-expansions', noun: 'art-deco-penthouse-interior' },
-  { category: 'characters', noun: 'syndicate-heist-wardrobe-pack' },
-  { category: 'scripts', noun: 'drift-telemetry-physics-hook' },
-];
 
 export function escapeXml(unsafe: string): string {
   return unsafe
@@ -40,27 +13,32 @@ export function escapeXml(unsafe: string): string {
 }
 
 export function normalizeBaseUrl(rawBaseUrl?: string): string {
-  const fallback = 'https://gta6mod.community';
+  const fallback = SITE_CONFIG.siteUrl;
   if (!rawBaseUrl || !rawBaseUrl.trim()) return fallback;
   return rawBaseUrl.trim().replace(/\/+$/, '');
 }
 
+function formatTrailingPath(rawPath: string): string {
+  if (!rawPath || rawPath === '/') return '/';
+  const withLeading = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+  return withLeading.endsWith('/') ? withLeading : `${withLeading}/`;
+}
+
 /**
- * Generates a deterministic catalog of thousands of SEO-ready URLs
- * across core routes, dynamically added pages, mod pages, categories,
- * creator credits, and gameplay videos.
+ * Generates the exact canonical sitemap catalog matching our static export
+ * output: Shard 1 (core routes + mod detail pages) and Shards 2..5 (2,000 pSEO key pages).
  */
 export function generateCatalogSitemapEntries(
   baseUrlInput?: string,
-  totalSyntheticMods = 2500,
+  maxPseoKeys = 2000,
   dynamicEntries: SitemapUrlEntry[] = []
 ): SitemapUrlEntry[] {
   const baseUrl = normalizeBaseUrl(baseUrlInput);
   const entries: SitemapUrlEntry[] = [];
 
-  // 0. Dynamically added pages (immediately prioritized at the top of Shard 1)
+  // 0. Dynamically added pages (Shard 1)
   for (const dyn of dynamicEntries) {
-    const cleanPath = dyn.path.startsWith('/') ? dyn.path : `/${dyn.path}`;
+    const cleanPath = formatTrailingPath(dyn.path);
     entries.push({
       ...dyn,
       path: cleanPath,
@@ -69,21 +47,22 @@ export function generateCatalogSitemapEntries(
     });
   }
 
-  // 1. Core Standalone Pages (Shard 1)
+  // 1. Core Standalone Routes (Shard 1 -> /sitemaps/sitemap-core.xml)
   const coreRoutes = [
-    { path: '/', priority: '1.0', freq: 'hourly' as const, title: 'Gta6mod Home & Launch Hub' },
-    { path: '/mods', priority: '0.9', freq: 'hourly' as const, title: 'Vice City Mods Directory' },
-    { path: '/official-media', priority: '0.9', freq: 'daily' as const, title: 'Official 4K Media & Lore Archive' },
-    { path: '/gameplay', priority: '0.9', freq: 'daily' as const, title: 'YouTube GTA 6 Gameplay & Engine Analysis' },
-    { path: '/credits', priority: '0.8', freq: 'daily' as const, title: 'Creator Credits & Attribution Ledger' },
-    { path: '/sitemap-explorer', priority: '0.7', freq: 'weekly' as const, title: 'Multi-Shard XML Sitemap Inspector' },
+    { path: '/', priority: '1.0', freq: 'daily' as const, title: 'gta6keys — GTA 6 Digital Keys Hub' },
+    { path: '/keys/', priority: '0.95', freq: 'daily' as const, title: 'GTA 6 Regional Digital Keys Directory' },
+    { path: '/official-media/', priority: '0.8', freq: 'weekly' as const, title: 'Official 4K Media & Lore Archive' },
+    { path: '/mods/', priority: '0.8', freq: 'weekly' as const, title: 'Vice City Mods Directory' },
+    { path: '/gameplay/', priority: '0.8', freq: 'weekly' as const, title: 'YouTube GTA 6 Gameplay & Engine Analysis' },
+    { path: '/credits/', priority: '0.7', freq: 'weekly' as const, title: 'Creator Credits & Attribution Ledger' },
+    { path: '/sitemap-explorer/', priority: '0.6', freq: 'weekly' as const, title: 'Static Multi-Shard XML Sitemap Inspector' },
   ];
 
   for (const route of coreRoutes) {
     entries.push({
       loc: `${baseUrl}${route.path}`,
       path: route.path,
-      lastmod: '2026-11-10',
+      lastmod: '2026-11-22',
       changefreq: route.freq,
       priority: route.priority,
       entityType: 'core',
@@ -92,88 +71,35 @@ export function generateCatalogSitemapEntries(
     });
   }
 
-  // 2. Category Landing Pages (Shard 1)
-  for (const cat of MOD_CATEGORIES) {
-    if (cat.id === 'all') continue;
-    const path = `/mods/category/${cat.id}`;
-    entries.push({
-      loc: `${baseUrl}${path}`,
-      path,
-      lastmod: '2026-11-09',
-      changefreq: 'daily',
-      priority: '0.9',
-      entityType: 'category',
-      shardId: 1,
-      title: `${cat.label} – Category Index (${cat.count} Mods)`,
-    });
-  }
-
-  // 3. Curated Featured Mods (Shard 1)
+  // 2. Statically Exported Mod Detail Routes (Shard 1 -> /sitemaps/sitemap-core.xml)
   for (const mod of INITIAL_MODS) {
-    const path = `/mods/${mod.category}/${mod.slug}`;
+    const path = formatTrailingPath(`/mods/${mod.category}/${mod.slug}`);
     if (entries.some((e) => e.path === path)) continue;
     entries.push({
       loc: `${baseUrl}${path}`,
       path,
       lastmod: mod.updatedAt,
       changefreq: 'weekly',
-      priority: '0.8',
+      priority: '0.7',
       entityType: 'mod',
       shardId: 1,
       title: `${mod.title} (${mod.version})`,
     });
   }
 
-  // 4. Creator Credit Profiles (Shard 1)
-  for (const credit of INITIAL_CREDITS) {
-    if (entries.some((e) => e.path === credit.profileSlug)) continue;
-    entries.push({
-      loc: `${baseUrl}${credit.profileSlug}`,
-      path: credit.profileSlug,
-      lastmod: '2026-11-08',
-      changefreq: 'weekly',
-      priority: '0.7',
-      entityType: 'credit',
-      shardId: 1,
-      title: `${credit.displayName} (${credit.handle}) – ${credit.specialty}`,
-    });
-  }
-
-  // 5. YouTube Gameplay Showcase Pages (Shard 1)
-  for (const video of YOUTUBE_GAMEPLAY_VIDEOS) {
-    const path = `/gameplay/${video.id}`;
+  // 3. Statically Exported pSEO Key Routes (Shards 2..5 -> /sitemaps/sitemap-keys-1..4.xml)
+  const allPseoPages = getAllPseoKeyPages().slice(0, Math.max(0, maxPseoKeys));
+  for (const page of allPseoPages) {
+    const path = formatTrailingPath(page.path);
     entries.push({
       loc: `${baseUrl}${path}`,
       path,
-      lastmod: '2026-11-07',
-      changefreq: 'monthly',
-      priority: '0.8',
-      entityType: 'gameplay',
-      shardId: 1,
-      title: video.title,
-    });
-  }
-
-  // 6. Programmatic Long-Tail Mod Pages across Shards 1..5 (for thousands of pages)
-  const urlsPerShard = 500;
-  for (let i = 1; i <= totalSyntheticMods; i++) {
-    const prefix = SYNTHETIC_MOD_PREFIXES[i % SYNTHETIC_MOD_PREFIXES.length];
-    const typeSpec = SYNTHETIC_MOD_TYPES[i % SYNTHETIC_MOD_TYPES.length];
-    const buildNum = String(i).padStart(4, '0');
-    const slug = `${prefix}-${typeSpec.noun}-build-${buildNum}`;
-    const path = `/mods/${typeSpec.category}/${slug}`;
-    const shardId = Math.min(5, Math.floor((i - 1) / urlsPerShard) + 1);
-    const day = String((i % 28) + 1).padStart(2, '0');
-
-    entries.push({
-      loc: `${baseUrl}${path}`,
-      path,
-      lastmod: `2026-10-${day}`,
-      changefreq: 'weekly',
-      priority: i <= 250 ? '0.8' : '0.6',
-      entityType: 'mod',
-      shardId,
-      title: `${prefix.replace('-', ' ').toUpperCase()} ${typeSpec.noun.replace(/-/g, ' ')} #${buildNum}`,
+      lastmod: page.lastmod,
+      changefreq: page.intent.id === 'gift-code' ? 'monthly' : 'weekly',
+      priority: page.priority,
+      entityType: 'key',
+      shardId: page.shardIndex + 1,
+      title: page.metaTitle,
     });
   }
 
@@ -194,23 +120,30 @@ export function getSitemapShardsSummary(
   }
 
   const shardLabels: Record<number, string> = {
-    1: 'Shard 01: Core Hub, Dynamic Submissions, Featured Mods & Credits',
-    2: 'Shard 02: Vehicles & Widebody Customs Index (#0501–#1000)',
-    3: 'Shard 03: Ray-Tracing Shaders & Vice LUTs (#1001–#1500)',
-    4: 'Shard 04: Leonida Map Expansions & Interiors (#1501–#2000)',
-    5: 'Shard 05: Scripts, Physics & Character Packs (#2001–#2500+)',
+    1: 'Core Hub, Keys Directory & Mod Pages',
+    2: 'Keys Shard 01: Core Regional Editions & Redeem Guides (#1–#500)',
+    3: 'Keys Shard 02: Redeem Codes & Store Vouchers (#501–#1000)',
+    4: 'Keys Shard 03: Store Vouchers & Download Keys (#1001–#1500)',
+    5: 'Keys Shard 04: Download Keys & Gift Codes (#1501–#2000)',
   };
 
   return Array.from(shardMap.entries())
     .sort(([a], [b]) => a - b)
-    .map(([shardId, list]) => ({
-      shardId,
-      label: shardLabels[shardId] || `Shard 0${shardId}: Extended Mod Archive`,
-      entityType: shardId === 1 ? 'mixed' : 'mod',
-      urlCount: list.length,
-      samplePath: list[0]?.path || '/',
-      xmlEndpoint: `${baseUrl}/sitemap.xml?shard=${shardId}`,
-    }));
+    .map(([shardId, list]) => {
+      const fileName =
+        shardId === 1
+          ? 'sitemap-core.xml'
+          : `sitemap-keys-${shardId - 1}.xml`;
+
+      return {
+        shardId,
+        label: shardLabels[shardId] || `Keys Shard 0${shardId - 1}`,
+        entityType: shardId === 1 ? 'mixed' : 'key',
+        urlCount: list.length,
+        samplePath: list[0]?.path || '/',
+        xmlEndpoint: `${baseUrl}/sitemaps/${fileName}`,
+      };
+    });
 }
 
 export function buildUrlSetXml(entries: SitemapUrlEntry[]): string {
@@ -231,7 +164,10 @@ ${urlNodes}
 </urlset>`;
 }
 
-export function buildSitemapIndexXml(shards: SitemapShardInfo[], lastmod = '2026-11-10'): string {
+export function buildSitemapIndexXml(
+  shards: SitemapShardInfo[],
+  lastmod = '2026-11-22'
+): string {
   const sitemapNodes = shards
     .map(
       (shard) => `  <sitemap>

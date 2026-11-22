@@ -23,7 +23,13 @@ export interface ModItem {
   technicalNotes: string[];
   compatibility: string;
   accentGradient: string;
-  artworkTheme: 'muscle-car' | 'neon-skyline' | 'vice-beach' | 'ocean-drive' | 'everglades' | 'penthouse';
+  artworkTheme:
+    | 'muscle-car'
+    | 'neon-skyline'
+    | 'vice-beach'
+    | 'ocean-drive'
+    | 'everglades'
+    | 'penthouse';
   imageUrl?: string;
   featuredInMosaic?: boolean;
 }
@@ -37,7 +43,11 @@ export interface YoutubeGameplayVideo {
   publishedDate: string;
   duration: string;
   viewsLabel: string;
-  category: 'Official Trailer' | 'Graphics Mod Concept' | 'Gameplay Breakdown' | 'Map Reconstruction';
+  category:
+    | 'Official Trailer'
+    | 'Graphics Mod Concept'
+    | 'Gameplay Breakdown'
+    | 'Map Reconstruction';
   summary: string;
   highlights: string[];
   nonAffiliationNote: string;
@@ -47,7 +57,12 @@ export interface CreatorCredit {
   id: string;
   handle: string;
   displayName: string;
-  specialty: 'Shader Architecture' | 'Vehicle Modeling' | 'World & Map Design' | 'Script Hook & API' | 'YouTube Gameplay & Media';
+  specialty:
+    | 'Shader Architecture'
+    | 'Vehicle Modeling'
+    | 'World & Map Design'
+    | 'Script Hook & API'
+    | 'YouTube Gameplay & Media';
   primaryContribution: string;
   modsPublished: number;
   totalDownloads: string;
@@ -70,7 +85,13 @@ export interface ValidationResult {
   errors: Record<string, string>;
 }
 
-export type SitemapEntityType = 'core' | 'mod' | 'category' | 'credit' | 'gameplay';
+export type SitemapEntityType =
+  | 'core'
+  | 'key'
+  | 'mod'
+  | 'category'
+  | 'credit'
+  | 'gameplay';
 
 export interface SitemapUrlEntry {
   loc: string;

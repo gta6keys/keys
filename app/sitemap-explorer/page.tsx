@@ -4,9 +4,9 @@ import { SiteHeader } from '@/components/site-header';
 import { CreditsAndSitemapSection } from '@/components/credits-and-sitemap-section';
 
 export const metadata: Metadata = {
-  title: 'Multi-Shard sitemap.xml Inspector | Gta6mod',
+  title: 'Multi-Shard sitemap.xml Inspector | gta6keys',
   description:
-    'Inspect Gta6mod canonical routes, XML sitemap shards, crawler directives, and live sitemap payloads for GTA 6 content.',
+    'Inspect gta6keys canonical routes, XML sitemap shards, crawler directives, and live sitemap payloads for GTA 6 content.',
   alternates: {
     canonical: '/sitemap-explorer/',
   },

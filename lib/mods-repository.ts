@@ -230,7 +230,7 @@ export const YOUTUBE_GAMEPLAY_VIDEOS: YoutubeGameplayVideo[] = [
       '0:58 – Grassrivers wetlands airboat & wildlife ecosystem simulation',
     ],
     nonAffiliationNote:
-      'Embedded directly from YouTube for community reference. Gta6mod is an independent fan index and is not affiliated with Rockstar Games or GTA 6.',
+      'Embedded directly from YouTube for community reference. gta6keys is an independent fan index and is not affiliated with Rockstar Games or GTA 6.',
   },
   {
     id: 'yt-vice-graphics-concept',
@@ -250,7 +250,7 @@ export const YOUTUBE_GAMEPLAY_VIDEOS: YoutubeGameplayVideo[] = [
       '6:20 – Shader comparison: Default LUT vs. Leonida Sunset RTGI v2.4',
     ],
     nonAffiliationNote:
-      'Community-created modding demonstration hosted on YouTube. Not official Rockstar Games footage; Gta6mod is not affiliated with Take-Two Interactive.',
+      'Community-created modding demonstration hosted on YouTube. Not official Rockstar Games footage; gta6keys is not affiliated with Take-Two Interactive.',
   },
   {
     id: 'yt-leonida-map-reconstruction',
@@ -270,7 +270,7 @@ export const YOUTUBE_GAMEPLAY_VIDEOS: YoutubeGameplayVideo[] = [
       '9:30 – Keys overseas highway sunset drive at 120 FPS',
     ],
     nonAffiliationNote:
-      'Independent community map modding showcase uploaded to YouTube. Gta6mod is strictly unofficial and unaffiliated with GTA 6.',
+      'Independent community map modding showcase uploaded to YouTube. gta6keys is strictly unofficial and unaffiliated with GTA 6.',
   },
 ];
 
@@ -428,7 +428,7 @@ export function createSlugFromTitle(title: string): string {
 
 export function buildDynamicModAndSitemapObjects(
   input: ModSubmissionInput,
-  baseUrl = 'https://gta6mod.community'
+  baseUrl = 'https://gta6keys.community'
 ): {
   mod: ModItem;
   credit: CreatorCredit;
@@ -466,14 +466,14 @@ export function buildDynamicModAndSitemapObjects(
       input.category === 'shaders'
         ? 'neon-skyline'
         : input.category === 'map-expansions'
-        ? 'penthouse'
-        : 'muscle-car',
+          ? 'penthouse'
+          : 'muscle-car',
     imageUrl:
       input.category === 'shaders'
         ? GENERATED_VI_ASSETS.rtgiShaderMod
         : input.category === 'map-expansions'
-        ? GENERATED_VI_ASSETS.starfishEstateMod
-        : GENERATED_VI_ASSETS.supercarMod,
+          ? GENERATED_VI_ASSETS.starfishEstateMod
+          : GENERATED_VI_ASSETS.supercarMod,
   };
 
   const credit: CreatorCredit = {
@@ -484,10 +484,10 @@ export function buildDynamicModAndSitemapObjects(
       input.category === 'shaders'
         ? 'Shader Architecture'
         : input.category === 'vehicles'
-        ? 'Vehicle Modeling'
-        : input.category === 'scripts'
-        ? 'Script Hook & API'
-        : 'World & Map Design',
+          ? 'Vehicle Modeling'
+          : input.category === 'scripts'
+            ? 'Script Hook & API'
+            : 'World & Map Design',
     primaryContribution: `${input.title.trim()} (${input.version.trim()})`,
     modsPublished: 1,
     totalDownloads: 'New Release',

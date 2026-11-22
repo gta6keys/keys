@@ -1,10 +1,11 @@
 {
-  "name": "gta6mod-portal",
+  "name": "gta6keys-portal",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "generate:sitemaps": "node scripts/generate-sitemaps.mjs",
+    "build": "node scripts/generate-sitemaps.mjs && next build",
     "start": "next start",
     "lint": "eslint ."
   },

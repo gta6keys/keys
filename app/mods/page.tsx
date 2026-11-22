@@ -6,7 +6,7 @@ import { SiteHeader } from '@/components/site-header';
 import { ModsDirectorySection } from '@/components/mods-directory-section';
 
 export const metadata: Metadata = {
-  title: 'Mods Directory & Technical Packages | Gta6mod',
+  title: 'Mods Directory & Technical Packages | gta6keys',
   description:
     'Browse GTA 6 Vice City mods, graphics shaders, vehicle packs, map expansions, characters, and gameplay scripts.',
   alternates: {
@@ -31,7 +31,7 @@ export default function ModsPage() {
             </span>
           </div>
           <Link href="/" className="text-[#EAB308] hover:underline uppercase">
-            GTA6MOD INDEX →
+            gta6keys INDEX →
           </Link>
         </div>
       </footer>

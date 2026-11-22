@@ -93,7 +93,7 @@ export function CreditsAndSitemapSection({
   const { t } = useI18n();
   const [internalCredits, setInternalCredits] = useState<CreatorCredit[]>(INITIAL_CREDITS);
   const [internalSitemapEntries, setInternalSitemapEntries] = useState<SitemapUrlEntry[]>(() =>
-    generateCatalogSitemapEntries('https://gta6mod.github.io/Gta6mod', 2500)
+    generateCatalogSitemapEntries('https://gta6keys.github.io/gta6keys', 2500)
   );
   const [lockerOpen, setLockerOpen] = useState(false);
 
@@ -132,7 +132,7 @@ export function CreditsAndSitemapSection({
 
   const shardsSummary = getSitemapShardsSummary(
     sitemapEntries,
-    'https://gta6mod.github.io/Gta6mod'
+    'https://gta6keys.github.io/gta6keys'
   );
 
   const visibleSitemapRows = filterSitemapEntries(sitemapEntries, {
@@ -156,8 +156,8 @@ export function CreditsAndSitemapSection({
       authorHandle: authorHandle.startsWith('@')
         ? authorHandle.trim()
         : authorHandle.trim()
-        ? `@${authorHandle.trim()}`
-        : '',
+          ? `@${authorHandle.trim()}`
+          : '',
       category,
       version,
       summary,
@@ -179,7 +179,7 @@ export function CreditsAndSitemapSection({
       } else {
         const { credit, sitemapEntry } = buildDynamicModAndSitemapObjects(
           payload,
-          'https://gta6mod.github.io/Gta6mod'
+          'https://gta6keys.github.io/gta6keys'
         );
         setInternalCredits((prev) => [credit, ...prev.filter((c) => c.id !== credit.id)]);
         setInternalSitemapEntries((prev) => [
@@ -257,11 +257,10 @@ export function CreditsAndSitemapSection({
                     key={spec}
                     type="button"
                     onClick={() => setSelectedSpecialty(spec)}
-                    className={`px-3.5 py-2 text-xs font-mono uppercase border-r border-[#262626] last:border-r-0 whitespace-nowrap cursor-pointer ${
-                      active
+                    className={`px-3.5 py-2 text-xs font-mono uppercase border-r border-[#262626] last:border-r-0 whitespace-nowrap cursor-pointer ${active
                         ? 'bg-[#EAB308] text-[#0A0A0A] font-semibold'
                         : 'text-neutral-300 hover:text-white'
-                    }`}
+                      }`}
                   >
                     {spec}
                   </button>
@@ -600,16 +599,14 @@ export function CreditsAndSitemapSection({
                         })
                       )
                     }
-                    className={`text-left p-4 cursor-pointer ${
-                      isSelected
+                    className={`text-left p-4 cursor-pointer ${isSelected
                         ? 'bg-[#EAB308] text-[#0A0A0A]'
                         : 'bg-[#121212] text-[#F5F5F5] hover:bg-[#0A0A0A]'
-                    }`}
+                      }`}
                   >
                     <div
-                      className={`flex items-center justify-between text-xs font-mono tabular-nums mb-1 ${
-                        isSelected ? 'text-[#0A0A0A] font-semibold' : 'text-[#EAB308]'
-                      }`}
+                      className={`flex items-center justify-between text-xs font-mono tabular-nums mb-1 ${isSelected ? 'text-[#0A0A0A] font-semibold' : 'text-[#EAB308]'
+                        }`}
                     >
                       <span>SHARD 0{shard.shardId}</span>
                       <span>{shard.urlCount} URLS</span>
@@ -618,9 +615,8 @@ export function CreditsAndSitemapSection({
                       {shard.label}
                     </div>
                     <div
-                      className={`text-[11px] font-mono truncate ${
-                        isSelected ? 'text-[#0A0A0A]/80' : 'text-neutral-400'
-                      }`}
+                      className={`text-[11px] font-mono truncate ${isSelected ? 'text-[#0A0A0A]/80' : 'text-neutral-400'
+                        }`}
                     >
                       /sitemap.xml?shard={shard.shardId}
                     </div>
@@ -744,11 +740,10 @@ export function CreditsAndSitemapSection({
                             })
                           )
                         }
-                        className={`px-2.5 py-1 text-[11px] font-mono uppercase border-r border-[#262626] cursor-pointer ${
-                          inspectorState.xmlMode === 'urlset'
+                        className={`px-2.5 py-1 text-[11px] font-mono uppercase border-r border-[#262626] cursor-pointer ${inspectorState.xmlMode === 'urlset'
                             ? 'bg-[#EAB308] text-[#0A0A0A] font-semibold'
                             : 'text-neutral-300 hover:text-white'
-                        }`}
+                          }`}
                       >
                         urlset
                       </button>
@@ -762,11 +757,10 @@ export function CreditsAndSitemapSection({
                             })
                           )
                         }
-                        className={`px-2.5 py-1 text-[11px] font-mono uppercase cursor-pointer ${
-                          inspectorState.xmlMode === 'sitemapindex'
+                        className={`px-2.5 py-1 text-[11px] font-mono uppercase cursor-pointer ${inspectorState.xmlMode === 'sitemapindex'
                             ? 'bg-[#EAB308] text-[#0A0A0A] font-semibold'
                             : 'text-neutral-300 hover:text-white'
-                        }`}
+                          }`}
                       >
                         sitemapindex
                       </button>
@@ -804,7 +798,7 @@ export function CreditsAndSitemapSection({
                 href="/"
                 className="font-display text-2xl font-bold uppercase tracking-wider text-[#F5F5F5]"
               >
-                GTA6MOD
+                gta6keys
               </Link>
               <p className="text-xs font-mono text-neutral-400 mt-1">
                 {t('footer.subtitle')}
@@ -846,7 +840,7 @@ export function CreditsAndSitemapSection({
               </div>
             </div>
             <div className="text-xs text-neutral-400 font-mono shrink-0">
-              © 2026 GTA6MOD
+              © 2026 gta6keys
             </div>
           </div>
         </div>

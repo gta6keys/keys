@@ -16,25 +16,28 @@ import {
   validateModSubmission,
 } from './mods-repository';
 
+const TEST_BASE = 'https://gta6keys.github.io/gta6keys';
+
 test('escapeXml properly escapes XML special characters', () => {
-  const raw = 'https://gta6mod.community/mods?a=1&b="2"&c=<tag>';
+  const raw = `${TEST_BASE}/mods?a=1&b="2"&c=<tag>`;
   const escaped = escapeXml(raw);
   assert.equal(
     escaped,
-    'https://gta6mod.community/mods?a=1&amp;b=&quot;2&quot;&amp;c=&lt;tag&gt;'
+    `${TEST_BASE}/mods?a=1&amp;b=&quot;2&quot;&amp;c=&lt;tag&gt;`
   );
 });
 
-test('generateCatalogSitemapEntries generates 2,500+ crawler URLs across 5 shards', () => {
-  const entries = generateCatalogSitemapEntries('https://gta6mod.community', 2500);
-  assert.ok(entries.length > 2500, `Expected > 2500 entries, got ${entries.length}`);
+test('generateCatalogSitemapEntries generates 2,000+ static crawler URLs across 5 static shards', () => {
+  const entries = generateCatalogSitemapEntries(TEST_BASE, 2000);
+  assert.ok(entries.length >= 2013, `Expected >= 2013 entries, got ${entries.length}`);
 
-  const shards = getSitemapShardsSummary(entries, 'https://gta6mod.community');
+  const shards = getSitemapShardsSummary(entries, TEST_BASE);
   assert.equal(shards.length, 5);
-  assert.equal(shards[0].xmlEndpoint, 'https://gta6mod.community/sitemap.xml?shard=1');
+  assert.equal(shards[0].xmlEndpoint, `${TEST_BASE}/sitemaps/sitemap-core.xml`);
+  assert.equal(shards[1].xmlEndpoint, `${TEST_BASE}/sitemaps/sitemap-keys-1.xml`);
 });
 
-test('dynamically added pages immediately update the generated sitemap.xml entries', () => {
+test('dynamically added pages immediately update the generated sitemap entries', () => {
   const { sitemapEntry } = buildDynamicModAndSitemapObjects(
     {
       title: 'Leonida Keys Offshore Speedboat Pack',
@@ -43,40 +46,38 @@ test('dynamically added pages immediately update the generated sitemap.xml entri
       version: 'v1.4.0',
       summary: 'High-speed offshore racing catamarans for the Leonida Keys sector.',
     },
-    'https://gta6mod.community'
+    TEST_BASE
   );
 
-  const entries = generateCatalogSitemapEntries('https://gta6mod.community', 2500, [
-    sitemapEntry,
-  ]);
-  assert.equal(entries[0].path, '/mods/vehicles/leonida-keys-offshore-speedboat-pack');
+  const entries = generateCatalogSitemapEntries(TEST_BASE, 2000, [sitemapEntry]);
+  assert.equal(entries[0].path, '/mods/vehicles/leonida-keys-offshore-speedboat-pack/');
 
   const xml = buildUrlSetXml(entries.slice(0, 3));
   assert.ok(
     xml.includes(
-      '<loc>https://gta6mod.community/mods/vehicles/leonida-keys-offshore-speedboat-pack</loc>'
+      `${TEST_BASE}/mods/vehicles/leonida-keys-offshore-speedboat-pack/`
     )
   );
 });
 
 test('buildUrlSetXml and buildSitemapIndexXml produce valid Sitemap 0.9 XML', () => {
-  const entries = generateCatalogSitemapEntries('https://gta6mod.community', 20);
+  const entries = generateCatalogSitemapEntries(TEST_BASE, 20);
   const urlsetXml = buildUrlSetXml(entries.slice(0, 5));
   assert.ok(urlsetXml.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
   assert.ok(urlsetXml.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'));
-  assert.ok(urlsetXml.includes('<loc>https://gta6mod.community/</loc>'));
+  assert.ok(urlsetXml.includes(`<loc>${TEST_BASE}/</loc>`));
 
-  const shards = getSitemapShardsSummary(entries, 'https://gta6mod.community');
+  const shards = getSitemapShardsSummary(entries, TEST_BASE);
   const indexXml = buildSitemapIndexXml(shards);
   assert.ok(indexXml.includes('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'));
-  assert.ok(indexXml.includes('<loc>https://gta6mod.community/sitemap.xml?shard=1</loc>'));
+  assert.ok(indexXml.includes(`${TEST_BASE}/sitemaps/sitemap-core.xml`));
 });
 
 test('filterSitemapEntries filters by shard, entityType, and search query', () => {
-  const entries = generateCatalogSitemapEntries('https://gta6mod.community', 600);
-  const creditsOnly = filterSitemapEntries(entries, { entityType: 'credit' });
-  assert.ok(creditsOnly.length >= 6);
-  assert.ok(creditsOnly.every((e) => e.entityType === 'credit'));
+  const entries = generateCatalogSitemapEntries(TEST_BASE, 600);
+  const keysOnly = filterSitemapEntries(entries, { entityType: 'key', limit: 20 });
+  assert.equal(keysOnly.length, 20);
+  assert.ok(keysOnly.every((e) => e.entityType === 'key'));
 
   const shard2Only = filterSitemapEntries(entries, { shardId: 2, limit: 100 });
   assert.ok(shard2Only.length > 0);
@@ -119,5 +120,8 @@ test('validateModSubmission enforces required fields and accepts valid input', (
   });
   assert.equal(valid.valid, true);
   assert.equal(Object.keys(valid.errors).length, 0);
-  assert.equal(createSlugFromTitle('Vice Neon Palm Overhaul!'), 'vice-neon-palm-overhaul');
+  assert.equal(
+    createSlugFromTitle('Vice Neon Palm Overhaul!'),
+    'vice-neon-palm-overhaul'
+  );
 });

@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: ModPageProps): Promise<Metada
       .join(' ');
   const description =
     matchedMod?.summary ||
-    `Explore the ${category.replaceAll('-', ' ')} mod "${title}" in the Gta6mod GTA 6 Vice City directory.`;
+    `Explore the ${category.replaceAll('-', ' ')} mod "${title}" in the gta6keys GTA 6 Vice City directory.`;
 
   return {
     title: `${title} | GTA 6 Mod Directory`,
@@ -66,7 +66,7 @@ export default async function ModDetailPage({ params }: ModPageProps) {
   const categoryLabel = matchedMod?.categoryLabel || category.toUpperCase();
   const summary =
     matchedMod?.summary ||
-    'Indexed GTA 6 / Leonida community modification package registered in the Gta6mod scalable repository and XML sitemap.';
+    'Indexed GTA 6 / Leonida community modification package registered in the gta6keys scalable repository and XML sitemap.';
   const imageUrl = matchedMod?.imageUrl || GENERATED_VI_ASSETS.heroKeyArt;
   const technicalNotes = matchedMod?.technicalNotes || [
     'Verified for RAGE 9 Shader & Asset Streamer pipeline',
@@ -83,7 +83,7 @@ export default async function ModDetailPage({ params }: ModPageProps) {
             href="/"
             className="font-display text-2xl font-bold tracking-wider text-white whitespace-nowrap shrink-0"
           >
-            Gta6mod
+            gta6keys
           </Link>
 
           <nav
@@ -208,7 +208,7 @@ export default async function ModDetailPage({ params }: ModPageProps) {
             </span>
           </div>
           <Link href="/" className="text-[#FACC15] hover:underline font-mono">
-            Gta6mod Home
+            gta6keys Home
           </Link>
         </div>
       </footer>

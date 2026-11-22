@@ -6,7 +6,7 @@ import { SiteHeader } from '@/components/site-header';
 import { RockstarOfficialGallerySection } from '@/components/rockstar-official-gallery-section';
 
 export const metadata: Metadata = {
-  title: 'Official 4K Launch Gallery & Lore Archive | Gta6mod',
+  title: 'Official 4K Launch Gallery & Lore Archive | gta6keys',
   description:
     'Explore a 4K GTA 6 Vice City media gallery, launch references, artwork, and Leonida lore in this independent archive.',
   alternates: {
@@ -31,7 +31,7 @@ export default function OfficialMediaPage() {
             </span>
           </div>
           <Link href="/" className="text-[#EAB308] hover:underline uppercase">
-            GTA6MOD INDEX →
+            gta6keys INDEX →
           </Link>
         </div>
       </footer>

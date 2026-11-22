@@ -518,5 +518,5 @@ export const DEFAULT_TRANSLATIONS: Record<LocaleCode, TranslationDictionary> = {
   },
 };
 
-export const I18N_STORAGE_KEY = 'gta6mod_i18n_config_v1';
-export const ACTIVE_LOCALE_STORAGE_KEY = 'gta6mod_active_locale_v1';
+export const I18N_STORAGE_KEY = 'gta6keys_i18n_config_v1';
+export const ACTIVE_LOCALE_STORAGE_KEY = 'gta6keys_active_locale_v1';

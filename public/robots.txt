@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gta6mod.github.io/Gta6mod/sitemap.xml
-
+Sitemap: https://gta6keys.github.io/gta6keys/sitemap.xml
