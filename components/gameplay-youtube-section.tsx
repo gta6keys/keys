@@ -63,20 +63,20 @@ export function GameplayYoutubeSection() {
     <section
       id="gameplay"
       aria-labelledby="gameplay-heading"
-      className="py-14 px-6 lg:px-12 bg-[#0A0A0A] border-b border-[#262626]"
+      className="py-12 px-4 sm:px-6 bg-[#0A0A0A] text-[#F5F5F5]"
     >
-      <div className="max-w-[1280px] mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Clean Hierarchy: Semantic Icon, Primary H1 Title, Concise 1-Line Subtitle */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 mb-8 border-b border-[#262626]">
           <div>
-            <Film className="w-6 h-6 text-[#EAB308] mb-3" aria-hidden="true" />
+            <Film className="w-6 h-6 text-[#E11D48] mb-3" aria-hidden="true" />
             <h1
               id="gameplay-heading"
-              className="font-display text-4xl sm:text-6xl font-bold uppercase text-[#F5F5F5] tracking-tight"
+              className="text-3xl sm:text-4xl font-bold tracking-tight text-[#F5F5F5]"
             >
               {t('gameplay.title')}
             </h1>
-            <p className="text-sm text-neutral-300 max-w-2xl mt-2">
+            <p className="text-sm sm:text-base text-[#A3A3A3] max-w-2xl mt-2">
               {t('gameplay.subtitle')}
             </p>
           </div>
@@ -84,7 +84,7 @@ export function GameplayYoutubeSection() {
           <div className="shrink-0">
             <StartGameModButton
               size="sm"
-              label="START THE GAME MOD"
+              label="Claim Digital Code"
               onClick={() => setLockerOpen(true)}
             />
           </div>
@@ -104,33 +104,28 @@ export function GameplayYoutubeSection() {
                 type="button"
                 onClick={() =>
                   setTheaterState((prev) =>
-                    transitionVideoTheater(prev, { type: 'SELECT_VIDEO', videoId: video.id })
+                    transitionVideoTheater(prev, {
+                      type: 'SELECT_VIDEO',
+                      videoId: video.id,
+                    })
                   )
                 }
                 className={`text-left p-5 cursor-pointer ${
                   isSelected
-                    ? 'bg-[#EAB308] text-[#0A0A0A]'
-                    : 'bg-[#121212] text-[#F5F5F5] hover:bg-[#0A0A0A]'
+                    ? 'bg-[#181818] text-[#F5F5F5]'
+                    : 'bg-[#121212] text-[#A3A3A3] hover:text-[#F5F5F5]'
                 }`}
               >
-                <div
-                  className={`flex items-center justify-between text-xs font-mono tabular-nums uppercase mb-1.5 ${
-                    isSelected ? 'text-[#0A0A0A] font-semibold' : 'text-[#EAB308]'
-                  }`}
-                >
-                  <span>
-                    0{idx + 1} {'//'} {video.category}
+                <div className="flex items-center justify-between text-xs font-mono tabular-nums mb-1.5">
+                  <span className={isSelected ? 'text-[#E11D48] font-bold' : 'text-[#737373]'}>
+                    0{idx + 1} · {video.category}
                   </span>
-                  <span>{video.duration}</span>
+                  <span className="text-[#737373]">{video.duration}</span>
                 </div>
-                <div className="font-display text-xl font-bold uppercase line-clamp-1 mb-1">
+                <div className="text-base font-bold text-[#F5F5F5] line-clamp-1 mb-1">
                   {video.title}
                 </div>
-                <div
-                  className={`text-xs font-mono ${
-                    isSelected ? 'text-[#0A0A0A]/80' : 'text-neutral-400'
-                  }`}
-                >
+                <div className="text-xs font-mono text-[#737373]">
                   {video.channelName} · {video.viewsLabel}
                 </div>
               </button>
@@ -140,7 +135,6 @@ export function GameplayYoutubeSection() {
 
         {/* Main Split Theater */}
         <div className="bg-[#121212] border border-[#262626] grid grid-cols-1 lg:grid-cols-12 mb-14">
-          {/* Left 7 Columns: Video Viewport */}
           <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-[#262626]">
             <div className="relative overflow-hidden bg-[#0A0A0A] aspect-video border border-[#262626]">
               {theaterState.mode === 'youtube-iframe' ? (
@@ -158,15 +152,15 @@ export function GameplayYoutubeSection() {
                       activeVideo.id === 'yt-rockstar-trailer-1'
                         ? 'hero-vista'
                         : activeVideo.id === 'yt-vice-graphics-concept'
-                        ? 'neon-skyline'
-                        : 'ocean-drive'
+                          ? 'neon-skyline'
+                          : 'ocean-drive'
                     }
                     className="w-full h-full"
                     label={activeVideo.title}
                   />
                   <div className="absolute inset-0 bg-black/55 flex flex-col justify-between p-5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-mono tabular-nums text-[#EAB308] bg-[#0A0A0A] px-3 py-1.5 border border-[#262626]">
+                      <span className="text-xs font-mono tabular-nums text-[#F5F5F5] bg-[#0A0A0A] px-3 py-1.5 border border-[#262626]">
                         ID: {activeVideo.youtubeId} · {activeVideo.duration}
                       </span>
                       <button
@@ -179,18 +173,18 @@ export function GameplayYoutubeSection() {
                             })
                           )
                         }
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-mono uppercase font-semibold text-[#0A0A0A] bg-[#EAB308] whitespace-nowrap shrink-0 cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-[#E11D48] hover:bg-[#BE123C] whitespace-nowrap shrink-0 cursor-pointer"
                       >
-                        <Play className="w-3.5 h-3.5 fill-current" />
+                        <Play className="w-3.5 h-3.5 fill-current" aria-hidden="true" />
                         <span>{t('gameplay.loadEmbed')}</span>
                       </button>
                     </div>
 
                     <div className="bg-[#0A0A0A] border border-[#262626] p-4">
-                      <div className="text-xs text-[#EAB308] font-mono tabular-nums uppercase mb-1">
-                        {t('gameplay.activeHighlight')} #{theaterState.selectedHighlightIdx + 1}:
+                      <div className="text-xs text-[#E11D48] font-mono tabular-nums mb-1">
+                        {t('gameplay.activeHighlight')} #{theaterState.selectedHighlightIdx + 1}
                       </div>
-                      <div className="text-sm font-mono text-[#F5F5F5]">
+                      <div className="text-sm text-[#F5F5F5]">
                         {activeVideo.highlights[theaterState.selectedHighlightIdx]}
                       </div>
                     </div>
@@ -212,13 +206,13 @@ export function GameplayYoutubeSection() {
                       })
                     )
                   }
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-mono uppercase border-r border-[#262626] whitespace-nowrap cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold border-r border-[#262626] whitespace-nowrap cursor-pointer ${
                     theaterState.mode === 'interactive-preview'
-                      ? 'bg-[#EAB308] text-[#0A0A0A] font-semibold'
-                      : 'text-neutral-300 hover:text-white'
+                      ? 'bg-[#E11D48] text-white'
+                      : 'text-[#A3A3A3] hover:text-[#F5F5F5]'
                   }`}
                 >
-                  <Tv className="w-3.5 h-3.5" />
+                  <Tv className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>{t('gameplay.frameCanvas')}</span>
                 </button>
                 <button
@@ -231,13 +225,13 @@ export function GameplayYoutubeSection() {
                       })
                     )
                   }
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-mono uppercase whitespace-nowrap cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold whitespace-nowrap cursor-pointer ${
                     theaterState.mode === 'youtube-iframe'
-                      ? 'bg-[#EAB308] text-[#0A0A0A] font-semibold'
-                      : 'text-neutral-300 hover:text-white'
+                      ? 'bg-[#E11D48] text-white'
+                      : 'text-[#A3A3A3] hover:text-[#F5F5F5]'
                   }`}
                 >
-                  <Video className="w-3.5 h-3.5" />
+                  <Video className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>{t('gameplay.iframePlayer')}</span>
                 </button>
               </div>
@@ -246,38 +240,37 @@ export function GameplayYoutubeSection() {
                 href={activeVideo.channelUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-mono uppercase text-[#EAB308] hover:underline whitespace-nowrap shrink-0"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E11D48] hover:underline whitespace-nowrap shrink-0"
               >
                 <span>
                   {t('gameplay.openYoutube')} ({activeVideo.viewsLabel})
                 </span>
-                <ExternalLink className="w-3.5 h-3.5" />
+                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
             </div>
           </div>
 
-          {/* Right 5 Columns: Breakdown Details & Non-Affiliation Disclaimer */}
           <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-2 text-xs text-[#EAB308] font-mono tabular-nums uppercase mb-2">
-                <span>{activeVideo.category}</span>
+              <div className="flex items-center gap-2 text-xs text-[#A3A3A3] font-mono tabular-nums mb-2">
+                <span className="text-[#E11D48]">{activeVideo.category}</span>
                 <span aria-hidden="true">·</span>
                 <span>{activeVideo.publishedDate}</span>
                 <span aria-hidden="true">·</span>
                 <span>{activeVideo.duration}</span>
               </div>
 
-              <h2 className="font-display text-2xl sm:text-3xl font-bold uppercase text-white mb-3">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#F5F5F5] mb-3">
                 {activeVideo.title}
               </h2>
 
-              <p className="text-sm text-neutral-300 leading-relaxed mb-5">
+              <p className="text-sm text-[#A3A3A3] leading-relaxed mb-5">
                 {activeVideo.summary}
               </p>
 
               <div className="mb-6">
-                <div className="text-xs font-mono uppercase text-[#EAB308] mb-2.5">
-                  {t('gameplay.timestampsTitle')}:
+                <div className="text-xs font-bold text-[#F5F5F5] mb-2.5">
+                  {t('gameplay.timestampsTitle')}
                 </div>
                 <div className="space-y-2">
                   {activeVideo.highlights.map((hl, idx) => (
@@ -292,10 +285,10 @@ export function GameplayYoutubeSection() {
                           })
                         )
                       }
-                      className={`w-full border px-3.5 py-2.5 text-left text-xs font-mono cursor-pointer ${
+                      className={`w-full border px-3.5 py-2.5 text-left text-xs cursor-pointer ${
                         theaterState.selectedHighlightIdx === idx
-                          ? 'bg-[#0A0A0A] border-[#EAB308] text-[#F5F5F5] font-semibold'
-                          : 'bg-[#0A0A0A] border-[#262626] text-neutral-300 hover:text-white'
+                          ? 'bg-[#181818] border-[#E11D48] text-[#F5F5F5] font-bold'
+                          : 'bg-[#0A0A0A] border-[#262626] text-[#A3A3A3] hover:text-[#F5F5F5]'
                       }`}
                     >
                       {hl}
@@ -308,19 +301,19 @@ export function GameplayYoutubeSection() {
             <div className="space-y-4">
               <StartGameModButton
                 size="lg"
-                label="START THE GAME MOD"
+                label="Claim Digital Code"
                 onClick={() => setLockerOpen(true)}
-                className="w-full justify-between"
+                className="w-full"
               />
 
-              <div className="bg-[#0A0A0A] border border-[#262626] p-4 text-xs text-neutral-300 leading-relaxed">
-                <div className="flex items-center gap-2 font-mono uppercase font-semibold text-[#EAB308] mb-1">
-                  <ShieldAlert className="w-4 h-4 shrink-0" />
+              <div className="bg-[#0A0A0A] border border-[#262626] p-4 text-xs text-[#A3A3A3] leading-relaxed">
+                <div className="flex items-center gap-2 font-bold text-[#F5F5F5] mb-1">
+                  <ShieldAlert className="w-4 h-4 text-[#E11D48] shrink-0" aria-hidden="true" />
                   <span>{t('gameplay.disclaimerTitle')}</span>
                 </div>
                 <p>
-                  {activeVideo.nonAffiliationNote} All trademarks and game footage belong to their
-                  respective owners.
+                  {activeVideo.nonAffiliationNote} All trademarks and game footage
+                  belong to their respective owners.
                 </p>
               </div>
             </div>
@@ -330,20 +323,17 @@ export function GameplayYoutubeSection() {
         {/* 5-Sector Architecture Grid */}
         <div>
           <div className="pb-4 mb-6 border-b border-[#262626]">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold uppercase text-[#F5F5F5] tracking-tight">
+            <h2 className="text-2xl font-bold text-[#F5F5F5]">
               {t('gameplay.sectorsTitle')}
             </h2>
-            <p className="text-xs font-mono text-neutral-400 mt-1">
+            <p className="text-xs text-[#A3A3A3] mt-1">
               {t('gameplay.sectorsSubtitle')}
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border border-[#262626] divide-y sm:divide-y-0 sm:divide-x divide-[#262626]">
             {ANGLED_MOD_SLICES.map((slice, idx) => (
-              <div
-                key={slice.id}
-                className="bg-[#121212] flex flex-col justify-between"
-              >
+              <div key={slice.id} className="bg-[#121212] flex flex-col justify-between">
                 <div className="h-44 relative border-b border-[#262626]">
                   <ViceArtworkCanvas
                     theme={slice.theme}
@@ -352,13 +342,13 @@ export function GameplayYoutubeSection() {
                   />
                 </div>
                 <div className="p-4 bg-[#0A0A0A]">
-                  <div className="text-[11px] font-mono tabular-nums uppercase text-[#EAB308] mb-1">
+                  <div className="text-[11px] font-mono tabular-nums text-[#E11D48] mb-1">
                     0{idx + 1} · {slice.metric}
                   </div>
-                  <div className="font-display text-xl font-bold uppercase text-white leading-tight">
+                  <div className="text-sm font-bold text-[#F5F5F5] leading-snug">
                     {slice.title}
                   </div>
-                  <div className="text-xs text-neutral-400 mt-1">{slice.subtitle}</div>
+                  <div className="text-xs text-[#A3A3A3] mt-1">{slice.subtitle}</div>
                 </div>
               </div>
             ))}
@@ -369,7 +359,7 @@ export function GameplayYoutubeSection() {
       <ContentLockerModal
         isOpen={lockerOpen}
         onClose={() => setLockerOpen(false)}
-        packageTitle={`GTA VI — ${activeVideo.title.toUpperCase()}`}
+        packageTitle={`Grand Theft Auto VI — ${activeVideo.title}`}
       />
     </section>
   );

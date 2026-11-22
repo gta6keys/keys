@@ -1,32 +1,13 @@
 import type { Metadata, Viewport } from 'next';
-import { JetBrains_Mono, Plus_Jakarta_Sans, Space_Grotesk } from 'next/font/google';
 import { LanguageProvider } from '@/components/language-provider';
 import { SITE_CONFIG, buildAssetUrl, buildCanonicalUrl } from '@/lib/site-config';
 import './globals.css';
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-jakarta',
-  display: 'swap',
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-jetbrains-mono',
-  display: 'swap',
-});
 
 const CANONICAL_HOME = buildCanonicalUrl('/');
 const OG_IMAGE_URL = buildAssetUrl(SITE_CONFIG.ogImagePath);
 
 export const viewport: Viewport = {
-  themeColor: '#08090d',
+  themeColor: '#0a0a0a',
   colorScheme: 'dark',
   width: 'device-width',
   initialScale: 1,
@@ -118,11 +99,8 @@ export default function RootLayout({
   };
 
   return (
-    <html
-      lang="en"
-      className={`${plusJakartaSans.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
-    >
-      <body className="min-h-screen bg-[#08090d] text-[#f3f4f6] font-sans antialiased">
+    <html lang="en">
+      <body className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5] font-sans antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

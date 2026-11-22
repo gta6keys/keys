@@ -2,23 +2,24 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { SiteHeader } from '@/components/site-header';
 import { CreditsAndSitemapSection } from '@/components/credits-and-sitemap-section';
+import { buildCanonicalUrl } from '@/lib/site-config';
 
 export const metadata: Metadata = {
-  title: 'Multi-Shard sitemap.xml Inspector | gta6keys',
+  title: 'Static Multi-Shard sitemap.xml Inspector',
   description:
-    'Inspect gta6keys canonical routes, XML sitemap shards, crawler directives, and live sitemap payloads for GTA 6 content.',
+    'Inspect gta6keys canonical routes, static XML sitemap shards, crawler directives, and live sitemap payloads.',
   alternates: {
-    canonical: '/sitemap-explorer/',
+    canonical: buildCanonicalUrl('/sitemap-explorer/'),
   },
 };
 
 export default function SitemapExplorerPage() {
   return (
-    <main className="min-h-screen flex flex-col justify-between bg-[#0A0A0A] text-[#F5F5F5]">
-      <div>
-        <SiteHeader />
+    <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5] flex flex-col">
+      <SiteHeader />
+      <main className="flex-1">
         <CreditsAndSitemapSection showCredits={false} showSitemap={true} />
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

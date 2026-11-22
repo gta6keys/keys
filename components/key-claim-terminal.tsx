@@ -1,15 +1,7 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import {
-  ArrowRight,
-  CheckCircle2,
-  Globe,
-  KeyRound,
-  Layers,
-  Lock,
-  ShieldCheck,
-} from 'lucide-react';
+import { ArrowRight, Globe, KeyRound, Layers, Lock } from 'lucide-react';
 import { ContentLockerModal } from './content-locker-modal';
 
 export type KeyPlatformId =
@@ -50,7 +42,7 @@ export const TERMINAL_PLATFORMS: TerminalPlatformOption[] = [
     ecosystem: 'playstation',
     storefront: 'PlayStation Store',
     codeFormatLabel: '12-Digit PSN Voucher',
-    maskedKeySample: '7K9M-••••-••••',
+    maskedKeySample: '7K9M-XXXX-XXXX',
     deliverySpec: '4K / DualSense Haptics',
   },
   {
@@ -60,7 +52,7 @@ export const TERMINAL_PLATFORMS: TerminalPlatformOption[] = [
     ecosystem: 'playstation',
     storefront: 'PlayStation Store',
     codeFormatLabel: '12-Digit PSN Voucher',
-    maskedKeySample: '9P4X-••••-••••',
+    maskedKeySample: '9P4X-XXXX-XXXX',
     deliverySpec: 'PSSR 4K / Ray Tracing',
   },
   {
@@ -70,7 +62,7 @@ export const TERMINAL_PLATFORMS: TerminalPlatformOption[] = [
     ecosystem: 'xbox',
     storefront: 'Microsoft Store',
     codeFormatLabel: '25-Character Xbox Key',
-    maskedKeySample: 'Q4N8P-•••••-•••••-•••••-•••••',
+    maskedKeySample: 'Q4N8P-XXXXX-XXXXX-XXXXX-XXXXX',
     deliverySpec: 'Native 4K / Quick Resume',
   },
   {
@@ -80,8 +72,8 @@ export const TERMINAL_PLATFORMS: TerminalPlatformOption[] = [
     ecosystem: 'xbox',
     storefront: 'Microsoft Store',
     codeFormatLabel: '25-Character Xbox Key',
-    maskedKeySample: 'M7V2K-•••••-•••••-•••••-•••••',
-    deliverySpec: 'Digital-Only Optimized',
+    maskedKeySample: 'M7V2K-XXXXX-XXXXX-XXXXX-XXXXX',
+    deliverySpec: 'Digital-Only Console',
   },
 ];
 
@@ -101,7 +93,7 @@ export const TERMINAL_REGIONS: TerminalRegionOption[] = [
   { code: 'ae', name: 'United Arab Emirates', storeRegion: 'MENA AE (AED)' },
   { code: 'pl', name: 'Poland', storeRegion: 'Europe PL (PLN)' },
   { code: 'nl', name: 'Netherlands', storeRegion: 'Europe NL (EUR)' },
-  { code: 'global', name: 'Global / Worldwide', storeRegion: 'Multi-Region Support' },
+  { code: 'global', name: 'Global / Worldwide', storeRegion: 'Multi-Region' },
 ];
 
 export const TERMINAL_EDITIONS: TerminalEditionOption[] = [
@@ -109,31 +101,31 @@ export const TERMINAL_EDITIONS: TerminalEditionOption[] = [
     id: 'standard',
     name: 'Standard Edition',
     badge: 'Base Game',
-    highlights: 'Full Grand Theft Auto VI campaign + day-one pre-load license',
+    highlights: 'Full Grand Theft Auto VI base game license with pre-load support.',
   },
   {
     id: 'deluxe',
     name: 'Vice City Deluxe Edition',
-    badge: 'Popular',
-    highlights: 'Base game + Vintage Vice City vehicle & wardrobe bonus bundle',
+    badge: 'Deluxe',
+    highlights: 'Base game with Vintage Vice City vehicle and wardrobe bundle.',
   },
   {
     id: 'ultimate',
     name: 'Leonida Ultimate Edition',
-    badge: 'Complete',
-    highlights: 'Base game + Deluxe items + Leonida expansion & launch perks',
+    badge: 'Ultimate',
+    highlights: 'Base game, Deluxe content, and Leonida launch expansion perks.',
   },
   {
     id: 'preload',
     name: 'Pre-Load Digital Key',
-    badge: 'Early Download',
-    highlights: 'Direct storefront license enabling pre-launch console download',
+    badge: 'Pre-Load',
+    highlights: 'Storefront library license enabling pre-launch console download.',
   },
   {
     id: 'collector',
     name: "Collector's Digital Key",
-    badge: 'Limited',
-    highlights: 'Full digital archive including soundtrack & bonus Leonida gear',
+    badge: 'Collector',
+    highlights: 'Complete digital archive including soundtrack and bonus gear.',
   },
 ];
 
@@ -212,21 +204,21 @@ export function KeyClaimTerminal({
       id: selectedEdition,
       name: editionLabelOverride || 'Standard Edition',
       badge: 'Digital Key',
-      highlights: 'Direct console storefront redemption license',
+      highlights: 'Direct console storefront redemption license.',
     };
   }, [selectedEdition, editionLabelOverride]);
 
   const packageTitle = `GTA VI — ${activePlatform.name} · ${activeEdition.name} (${activeRegion.name})`;
 
   return (
-    <div className="space-y-6">
-      {/* Step 1: Console Platform Selector */}
+    <div className="space-y-5">
+      {/* Platform Selector */}
       <div>
-        <div className="flex items-center justify-between mb-2.5">
-          <span className="text-xs font-medium text-slate-300">
-            Select Console Platform
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#A3A3A3]">
+            Console Platform
           </span>
-          <span className="text-[11px] font-mono text-slate-400">
+          <span className="text-xs font-mono text-[#737373]">
             {activePlatform.storefront}
           </span>
         </div>
@@ -234,7 +226,7 @@ export function KeyClaimTerminal({
         <div
           role="radiogroup"
           aria-label="Select console platform"
-          className="grid grid-cols-2 gap-2.5"
+          className="grid grid-cols-1 sm:grid-cols-2 border border-[#262626] bg-[#0A0A0A] divide-y sm:divide-y-0 sm:gap-px sm:bg-[#262626]"
         >
           {TERMINAL_PLATFORMS.map((platform) => {
             const isSelected = platform.id === selectedPlatform;
@@ -247,57 +239,55 @@ export function KeyClaimTerminal({
                 role="radio"
                 aria-checked={isSelected}
                 onClick={() => setSelectedPlatform(platform.id)}
-                className={`group relative flex items-center gap-3 px-3.5 py-3 rounded-xl border text-left transition-all cursor-pointer ${
+                className={`flex items-center gap-3 px-4 py-3 text-left cursor-pointer ${
                   isSelected
-                    ? 'bg-white/[0.08] border-[#F43F7E]/70 shadow-[0_0_0_1px_rgba(244,63,126,0.25)]'
-                    : 'bg-[#0B0D14] border-white/[0.08] hover:border-white/20 hover:bg-white/[0.03]'
+                    ? 'bg-[#181818] text-[#F5F5F5]'
+                    : 'bg-[#0A0A0A] text-[#A3A3A3] hover:text-[#F5F5F5]'
                 }`}
               >
-                <div
-                  className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                <span
+                  className={`w-8 h-8 border flex items-center justify-center shrink-0 ${
                     isSelected
-                      ? isPlayStation
-                        ? 'bg-[#0070D1] text-white'
-                        : 'bg-[#107C10] text-white'
-                      : 'bg-white/[0.05] text-slate-300 group-hover:text-white'
+                      ? 'bg-[#E11D48] border-[#E11D48] text-white'
+                      : 'bg-[#121212] border-[#262626] text-[#A3A3A3]'
                   }`}
                 >
                   {isPlayStation ? (
-                    <PlayStationEmblem className="w-5 h-5" />
+                    <PlayStationEmblem className="w-4 h-4" />
                   ) : (
                     <XboxEmblem className="w-4 h-4" />
                   )}
-                </div>
+                </span>
 
-                <div className="min-w-0 flex-1">
-                  <div className="font-display text-sm font-semibold text-white truncate">
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-bold text-[#F5F5F5] truncate">
                     {platform.name}
-                  </div>
-                  <div className="text-[11px] text-slate-400 truncate">
+                  </span>
+                  <span className="block text-xs text-[#A3A3A3] truncate">
                     {platform.deliverySpec}
-                  </div>
-                </div>
+                  </span>
+                </span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Step 2: Region & Edition Controls */}
+      {/* Region & Edition Selectors */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label
             htmlFor="terminal-region-select"
-            className="flex items-center gap-1.5 text-xs font-medium text-slate-300 mb-2"
+            className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#A3A3A3] mb-2"
           >
-            <Globe className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
+            <Globe className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Storefront Region</span>
           </label>
           <select
             id="terminal-region-select"
             value={activeRegion.code}
             onChange={(e) => setSelectedRegion(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl text-sm text-white bg-[#0B0D14] border border-white/[0.1] hover:border-white/20 focus:outline-none focus:border-[#F43F7E] transition-colors cursor-pointer"
+            className="w-full px-3 py-2.5 text-sm text-[#F5F5F5] bg-[#0A0A0A] border border-[#262626] focus:outline-none focus:border-[#E11D48] cursor-pointer"
           >
             {!TERMINAL_REGIONS.some((r) => r.code === activeRegion.code) && (
               <option value={activeRegion.code}>{activeRegion.name}</option>
@@ -313,16 +303,16 @@ export function KeyClaimTerminal({
         <div>
           <label
             htmlFor="terminal-edition-select"
-            className="flex items-center gap-1.5 text-xs font-medium text-slate-300 mb-2"
+            className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#A3A3A3] mb-2"
           >
-            <Layers className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
+            <Layers className="w-3.5 h-3.5" aria-hidden="true" />
             <span>Game Edition</span>
           </label>
           <select
             id="terminal-edition-select"
             value={activeEdition.id}
             onChange={(e) => setSelectedEdition(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl text-sm text-white bg-[#0B0D14] border border-white/[0.1] hover:border-white/20 focus:outline-none focus:border-[#F43F7E] transition-colors cursor-pointer"
+            className="w-full px-3 py-2.5 text-sm text-[#F5F5F5] bg-[#0A0A0A] border border-[#262626] focus:outline-none focus:border-[#E11D48] cursor-pointer"
           >
             {!TERMINAL_EDITIONS.some((e) => e.id === activeEdition.id) && (
               <option value={activeEdition.id}>{activeEdition.name}</option>
@@ -336,67 +326,55 @@ export function KeyClaimTerminal({
         </div>
       </div>
 
-      {/* Live Key Allocation Preview */}
-      <div className="rounded-xl bg-[#0A0C12] border border-white/[0.08] p-4">
-        <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-white/[0.06]">
-          <div className="flex items-center gap-2 text-xs text-slate-300">
-            <KeyRound className="w-3.5 h-3.5 text-[#F43F7E]" aria-hidden="true" />
-            <span className="font-medium text-white">
-              {activePlatform.codeFormatLabel}
-            </span>
+      {/* Key Format Summary */}
+      <div className="bg-[#0A0A0A] border border-[#262626] p-4 space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-[#262626]">
+          <div className="flex items-center gap-2 text-xs font-bold text-[#F5F5F5]">
+            <KeyRound className="w-3.5 h-3.5 text-[#E11D48]" aria-hidden="true" />
+            <span>{activePlatform.codeFormatLabel}</span>
           </div>
-
-          <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
-            <CheckCircle2 className="w-3 h-3" aria-hidden="true" />
-            <span>Ready to Verify</span>
+          <span className="text-xs font-mono text-[#A3A3A3]">
+            Status: Available
           </span>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="font-mono text-sm sm:text-base tracking-widest text-slate-100 bg-white/[0.03] border border-white/[0.06] rounded-lg px-3.5 py-2 select-none">
+          <div className="font-mono text-sm tracking-wider text-[#F5F5F5] bg-[#121212] border border-[#262626] px-3 py-2 select-none">
             {activePlatform.maskedKeySample}
           </div>
-          <div className="text-xs text-slate-400 sm:text-right">
-            <div className="text-slate-200 font-medium">{activeRegion.name}</div>
-            <div className="text-[11px]">{activeEdition.name}</div>
+          <div className="text-xs text-[#A3A3A3] sm:text-right">
+            <div className="text-[#F5F5F5] font-bold">{activeRegion.name}</div>
+            <div>{activeEdition.name}</div>
           </div>
         </div>
       </div>
 
-      {/* Primary Claim CTA */}
-      <div className="space-y-3">
+      {/* Primary Action */}
+      <div className="space-y-2.5">
         <button
           type="button"
           onClick={() => setLockerOpen(true)}
-          className="group w-full flex items-center justify-between gap-4 px-5 py-4 rounded-xl bg-gradient-to-r from-[#F43F7E] via-[#EC4899] to-[#F59E0B] hover:brightness-110 text-white font-semibold shadow-[0_14px_40px_-12px_rgba(244,63,126,0.55)] transition-all cursor-pointer"
+          className="w-full flex items-center justify-between gap-4 px-5 py-4 bg-[#E11D48] hover:bg-[#BE123C] text-white border border-[#E11D48] cursor-pointer text-left"
         >
-          <span className="flex items-center gap-3 text-left">
-            <span className="w-10 h-10 rounded-lg bg-black/20 flex items-center justify-center shrink-0">
-              <Lock className="w-5 h-5" aria-hidden="true" />
-            </span>
-            <span className="flex flex-col">
-              <span className="font-display text-lg sm:text-xl font-bold tracking-tight leading-none">
+          <span className="flex items-center gap-3">
+            <Lock className="w-5 h-5 shrink-0" aria-hidden="true" />
+            <span>
+              <span className="block text-base sm:text-lg font-bold leading-tight">
                 {ctaLabel}
               </span>
-              <span className="text-xs text-white/90 font-normal mt-1">
+              <span className="block text-xs text-white/85 mt-0.5">
                 {activePlatform.shortLabel} · {activeEdition.name} · {activeRegion.name}
               </span>
             </span>
           </span>
 
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/25 text-xs font-semibold shrink-0 group-hover:translate-x-0.5 transition-transform">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0A0A0A] text-[#F5F5F5] text-xs font-bold shrink-0">
             <span>Unlock</span>
             <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
           </span>
         </button>
 
-        <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400 px-1">
-          <span className="inline-flex items-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-slate-300" aria-hidden="true" />
-            <span>{activeEdition.highlights}</span>
-          </span>
-          <span className="font-mono text-slate-500">Official Store Format</span>
-        </div>
+        <p className="text-xs text-[#A3A3A3]">{activeEdition.highlights}</p>
       </div>
 
       <ContentLockerModal
