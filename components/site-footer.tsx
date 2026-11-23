@@ -23,6 +23,9 @@ export function SiteFooter() {
                 alt={`${SITE_CONFIG.name} Logo`}
                 width={36}
                 height={36}
+                onError={(event) => {
+                  event.currentTarget.style.display = 'none';
+                }}
                 className="h-8 w-auto object-contain"
               />
               <span className="font-display text-2xl tracking-wider vice-text-gradient leading-none">

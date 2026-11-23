@@ -160,7 +160,7 @@ export function Gta6modPortal() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5] flex flex-col">
+    <div className="min-h-screen bg-transparent text-[#F8F5FF] flex flex-col">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
@@ -195,7 +195,7 @@ export function Gta6modPortal() {
                 </p>
               </div>
 
-              <div className="bg-[#121212] border border-[#262626] p-5 sm:p-6">
+              <div className="editorial-surface border-[#FF2A85]/30 p-5 sm:p-6">
                 <KeyClaimTerminal
                   defaultPlatform="ps5"
                   defaultRegionCode="us"
@@ -206,8 +206,8 @@ export function Gta6modPortal() {
 
             {/* Right 5 Columns: Flat Framed Cover Presentation */}
             <div className="lg:col-span-5">
-              <div className="bg-[#121212] border border-[#262626]">
-                <div className="px-4 py-3 border-b border-[#262626] flex items-center justify-between text-xs font-mono text-[#A3A3A3]">
+              <div className="vice-card border-[#FF2A85]/30">
+                <div className="px-4 py-3 border-b border-[#2F1F4D] flex items-center justify-between text-xs font-mono text-[#C4B5FD]">
                   <span>CONSOLE DIGITAL EDITION</span>
                   <span className="text-[#F5F5F5]">PS5 / XBOX</span>
                 </div>

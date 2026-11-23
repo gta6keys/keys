@@ -68,6 +68,9 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
               alt={`${SITE_CONFIG.name} Vice City Logo`}
               width={40}
               height={40}
+              onError={(event) => {
+                event.currentTarget.style.display = 'none';
+              }}
               className="h-9 w-auto object-contain drop-shadow-[0_0_10px_rgba(255,42,133,0.45)] group-hover:scale-105 transition-transform"
             />
             <span className="font-display text-2xl tracking-wider vice-text-gradient leading-none">
