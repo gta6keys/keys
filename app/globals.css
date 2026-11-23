@@ -137,3 +137,110 @@
 .gta-cover-scanline {
   display: none;
 }
+
+/* Vice City Animated Header Effects */
+@keyframes viceLogoGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(255, 42, 133, 0.55))
+      drop-shadow(0 0 18px rgba(34, 211, 238, 0.28));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(255, 138, 61, 0.72))
+      drop-shadow(0 0 26px rgba(255, 42, 133, 0.45));
+  }
+}
+
+@keyframes viceCtaSweep {
+  0% {
+    transform: translateX(-140%) skewX(-22deg);
+  }
+  100% {
+    transform: translateX(260%) skewX(-22deg);
+  }
+}
+
+.vice-logo-glow {
+  animation: viceLogoGlow 3.6s ease-in-out infinite;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vice-logo-glow:hover {
+  transform: scale(1.06) translateY(-1px);
+}
+
+.vice-nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  transition: color 180ms ease, transform 180ms ease, text-shadow 180ms ease,
+    background-color 180ms ease, border-color 180ms ease;
+}
+
+.vice-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 2px;
+  height: 2px;
+  background: linear-gradient(90deg, #22d3ee 0%, #ff2a85 52%, #ff8a3d 100%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vice-nav-link:hover {
+  transform: translateY(-1px);
+  color: #ffffff;
+  text-shadow: 0 0 14px rgba(255, 42, 133, 0.75);
+}
+
+.vice-nav-link:hover::after,
+.vice-nav-link[data-active='true']::after {
+  transform: scaleX(1);
+}
+
+.vice-nav-link[data-active='true'] {
+  color: #ffffff;
+  text-shadow: 0 0 14px rgba(34, 211, 238, 0.65);
+}
+
+.vice-cta-animated {
+  position: relative;
+  overflow: hidden;
+  transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease;
+}
+
+.vice-cta-animated::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 42%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.32),
+    transparent
+  );
+  animation: viceCtaSweep 3.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.vice-cta-animated:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vice-logo-glow,
+  .vice-cta-animated::before {
+    animation: none;
+  }
+  .vice-nav-link,
+  .vice-nav-link::after,
+  .vice-logo-glow,
+  .vice-cta-animated {
+    transition: none;
+  }
+}

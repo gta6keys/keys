@@ -12,6 +12,7 @@ import './globals.css';
 const CANONICAL_HOME = buildCanonicalUrl('/');
 const OG_IMAGE_URL = buildAssetUrl(SITE_CONFIG.ogImagePath);
 const LOGO_ASSET_URL = buildAssetUrl(SITE_CONFIG.logoPath);
+const FAVICON_SVG_HREF = withBasePath('/favicon.svg');
 const FAVICON_HREF = withBasePath(SITE_CONFIG.faviconPath);
 const BACKDROP_SRC = withBasePath(SITE_CONFIG.ogImagePath);
 
@@ -42,9 +43,12 @@ export const metadata: Metadata = {
   creator: SITE_CONFIG.name,
   publisher: SITE_CONFIG.name,
   icons: {
-    icon: [{ url: FAVICON_HREF, type: 'image/png' }],
-    shortcut: [FAVICON_HREF],
-    apple: [{ url: FAVICON_HREF, type: 'image/png' }],
+    icon: [
+      { url: FAVICON_SVG_HREF, type: 'image/svg+xml', sizes: 'any' },
+      { url: FAVICON_HREF, type: 'image/png', sizes: '192x192' },
+    ],
+    shortcut: [FAVICON_SVG_HREF],
+    apple: [{ url: FAVICON_HREF, type: 'image/png', sizes: '180x180' }],
   },
   robots: {
     index: true,
@@ -144,8 +148,9 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.cdnfonts.com/css/pricedown"
         />
-        <link rel="icon" type="image/png" href={FAVICON_HREF} />
-        <link rel="apple-touch-icon" href={FAVICON_HREF} />
+        <link rel="icon" type="image/svg+xml" sizes="any" href={FAVICON_SVG_HREF} />
+        <link rel="icon" type="image/png" sizes="192x192" href={FAVICON_HREF} />
+        <link rel="apple-touch-icon" sizes="180x180" href={FAVICON_HREF} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

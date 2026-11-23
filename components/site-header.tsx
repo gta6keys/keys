@@ -53,35 +53,30 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
     <>
       <header
         data-overlay-state={overlayState.status}
-        className="sticky top-0 z-40 bg-[#090514]/82 backdrop-blur-xl border-b border-[#FF2A85]/25"
+        className="sticky top-0 z-40 bg-[#090514]/84 backdrop-blur-xl border-b border-[#FF2A85]/30 shadow-[0_6px_30px_rgba(9,5,20,0.6)]"
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
-          {/* Brand Logo (gta6keys.png) */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between gap-4">
+          {/* Brand Logo Only (gta6keys.png) */}
           <Link
             href="/"
             aria-label={`${SITE_CONFIG.name} Home`}
-            className="flex items-center gap-2.5 shrink-0 group"
+            className="flex items-center shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF2A85]"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={withBasePath(SITE_CONFIG.logoPath)}
               alt={`${SITE_CONFIG.name} Vice City Logo`}
-              width={40}
-              height={40}
-              onError={(event) => {
-                event.currentTarget.style.display = 'none';
-              }}
-              className="h-9 w-auto object-contain drop-shadow-[0_0_10px_rgba(255,42,133,0.45)] group-hover:scale-105 transition-transform"
+              width={160}
+              height={54}
+              className="h-11 sm:h-12 w-auto object-contain vice-logo-glow"
             />
-            <span className="font-display text-2xl tracking-wider vice-text-gradient leading-none">
-              {SITE_CONFIG.name}
-            </span>
+            <span className="sr-only">{SITE_CONFIG.name}</span>
           </Link>
 
-          {/* Primary Navigation */}
+          {/* Animated Pricedown Primary Navigation */}
           <nav
             aria-label="Primary Navigation"
-            className="hidden lg:flex items-center gap-1"
+            className="hidden lg:flex items-center gap-1 xl:gap-2"
           >
             {NAV_ITEMS.map((item) => {
               const active = isRouteActive(item.href);
@@ -89,10 +84,11 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3 py-1.5 text-sm border transition-colors whitespace-nowrap ${
+                  data-active={active ? 'true' : 'false'}
+                  className={`vice-nav-link font-display text-lg xl:text-[19px] tracking-wider px-3 py-2 border whitespace-nowrap ${
                     active
-                      ? 'text-[#F8F5FF] bg-[#FF2A85]/20 border-[#FF2A85]/55 font-semibold shadow-[0_0_16px_rgba(255,42,133,0.2)]'
-                      : 'text-[#C4B5FD] hover:text-[#F8F5FF] hover:bg-[#1C1133]/70 border-transparent'
+                      ? 'bg-[#FF2A85]/18 border-[#FF2A85]/55'
+                      : 'text-[#DDD6FE] border-transparent hover:bg-[#1C1133]/60'
                   }`}
                 >
                   {t(item.labelKey)}
@@ -101,8 +97,8 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
             })}
           </nav>
 
-          {/* Right Controls: Language Switcher (en/es/fr/pt), Claim CTA & Mobile Trigger */}
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Right Controls: Language Switcher (en/es/fr/pt), Animated Pricedown CTA & Mobile Trigger */}
+          <div className="flex items-center gap-2.5 shrink-0">
             <div
               role="group"
               aria-label={t('nav.language')}
@@ -137,7 +133,7 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
             <button
               type="button"
               onClick={handleOpenClaim}
-              className="vice-btn-primary px-4 py-2 text-xs sm:text-sm font-bold cursor-pointer whitespace-nowrap"
+              className="vice-btn-primary vice-cta-animated font-display text-base sm:text-lg tracking-wider px-4 sm:px-5 py-2 cursor-pointer whitespace-nowrap leading-none"
             >
               {t('nav.claimCode')}
             </button>
@@ -147,12 +143,12 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
               onClick={() => dispatchOverlay({ type: 'TOGGLE_MOBILE_MENU' })}
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
-              className="lg:hidden inline-flex items-center justify-center w-9 h-9 bg-[#130B24] border border-[#FF2A85]/35 text-[#F8F5FF] cursor-pointer"
+              className="lg:hidden inline-flex items-center justify-center w-10 h-10 bg-[#130B24] border border-[#FF2A85]/40 text-[#F8F5FF] cursor-pointer"
             >
               {mobileMenuOpen ? (
-                <X className="w-4 h-4 text-[#22D3EE]" aria-hidden="true" />
+                <X className="w-5 h-5 text-[#22D3EE]" aria-hidden="true" />
               ) : (
-                <Menu className="w-4 h-4 text-[#FF8A3D]" aria-hidden="true" />
+                <Menu className="w-5 h-5 text-[#FF8A3D]" aria-hidden="true" />
               )}
             </button>
           </div>
@@ -162,20 +158,21 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
         {mobileMenuOpen && (
           <nav
             aria-label="Mobile Navigation"
-            className="lg:hidden border-t border-[#FF2A85]/25 bg-[#090514]/95 backdrop-blur-xl"
+            className="lg:hidden border-t border-[#FF2A85]/30 bg-[#090514]/95 backdrop-blur-xl"
           >
-            <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 divide-x divide-y divide-[#2F1F4D]">
+            <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 divide-x divide-y divide-[#2F1F4D]">
               {NAV_ITEMS.map((item) => {
                 const active = isRouteActive(item.href);
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
+                    data-active={active ? 'true' : 'false'}
                     onClick={() => dispatchOverlay({ type: 'CLOSE_ALL' })}
-                    className={`px-4 py-3 text-sm ${
+                    className={`font-display text-lg tracking-wider px-4 py-3 transition-colors ${
                       active
-                        ? 'bg-[#FF2A85]/20 text-[#F8F5FF] font-semibold'
-                        : 'text-[#C4B5FD] hover:text-[#F8F5FF]'
+                        ? 'bg-[#FF2A85]/22 text-white'
+                        : 'text-[#DDD6FE] hover:text-white hover:bg-[#1C1133]/70'
                     }`}
                   >
                     {t(item.labelKey)}

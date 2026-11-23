@@ -16,21 +16,20 @@ export function SiteFooter() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-[#2F1F4D]">
           <div className="md:col-span-5 space-y-4">
-            <Link href="/" className="inline-flex items-center gap-2.5">
+            <Link
+              href="/"
+              aria-label={`${SITE_CONFIG.name} Home`}
+              className="inline-flex items-center"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={withBasePath(SITE_CONFIG.logoPath)}
-                alt={`${SITE_CONFIG.name} Logo`}
-                width={36}
-                height={36}
-                onError={(event) => {
-                  event.currentTarget.style.display = 'none';
-                }}
-                className="h-8 w-auto object-contain"
+                alt={`${SITE_CONFIG.name} Vice City Logo`}
+                width={150}
+                height={50}
+                className="h-11 w-auto object-contain vice-logo-glow"
               />
-              <span className="font-display text-2xl tracking-wider vice-text-gradient leading-none">
-                {SITE_CONFIG.name}
-              </span>
+              <span className="sr-only">{SITE_CONFIG.name}</span>
             </Link>
             <p className="text-sm text-[#C4B5FD]/85 leading-relaxed max-w-sm">
               {t('footer.description')}
