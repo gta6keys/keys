@@ -3,20 +3,29 @@ import type { Metadata } from 'next';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { GameplayYoutubeSection } from '@/components/gameplay-youtube-section';
-import { buildCanonicalUrl } from '@/lib/site-config';
+import {
+  SITE_CONFIG,
+  buildCanonicalUrl,
+  buildLanguageAlternates,
+} from '@/lib/site-config';
 
 export const metadata: Metadata = {
-  title: 'YouTube Gameplay & Engine Analysis',
+  title: 'GTA 6 Gameplay & RAGE 9 Engine Analysis',
   description:
-    'Watch curated GTA 6 gameplay videos and explore community analysis of shaders, vehicles, maps, and the RAGE engine.',
+    'Watch curated GTA 6 Vice City gameplay feeds and frame-by-frame analysis of RAGE 9 shaders, custom vehicles, and Leonida map reconstructions.',
   alternates: {
     canonical: buildCanonicalUrl('/gameplay/'),
+    languages: buildLanguageAlternates('/gameplay/'),
+  },
+  other: {
+    'article:published_time': SITE_CONFIG.publishedAtIso,
+    'article:modified_time': SITE_CONFIG.modifiedAtIso,
   },
 };
 
 export default function GameplayPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5] flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <SiteHeader />
       <main className="flex-1">
         <GameplayYoutubeSection />

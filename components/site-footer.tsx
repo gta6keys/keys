@@ -1,97 +1,151 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
-import { ShieldAlert } from 'lucide-react';
+import { Globe, ShieldAlert } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/site-config';
 import { withBasePath } from '@/lib/utils';
+import { useI18n } from './language-provider';
 
 export function SiteFooter() {
+  const { locale, languages, setLocale, t } = useI18n();
+  const enabledLanguages = languages.filter((lang) => lang.enabled);
+
   return (
-    <footer className="border-t border-[#262626] bg-[#0A0A0A] text-[#A3A3A3]">
+    <footer className="border-t border-[#FF2A85]/25 bg-[#090514]/85 backdrop-blur-md text-[#C4B5FD]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-[#262626]">
-          <div className="md:col-span-5 space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-[#2F1F4D]">
+          <div className="md:col-span-5 space-y-4">
             <Link href="/" className="inline-flex items-center gap-2.5">
-              <span className="inline-flex items-center justify-center w-6 h-6 bg-[#E11D48] text-white font-bold text-xs">
-                VI
-              </span>
-              <span className="text-base font-bold text-[#F5F5F5]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={withBasePath(SITE_CONFIG.logoPath)}
+                alt={`${SITE_CONFIG.name} Logo`}
+                width={36}
+                height={36}
+                className="h-8 w-auto object-contain"
+              />
+              <span className="font-display text-2xl tracking-wider vice-text-gradient leading-none">
                 {SITE_CONFIG.name}
               </span>
             </Link>
-            <p className="text-sm text-[#A3A3A3] leading-relaxed max-w-sm">
-              Independent Grand Theft Auto VI digital key directory, regional console
-              redemption specifications, and media archive for PlayStation 5 and Xbox
-              Series X|S.
+            <p className="text-sm text-[#C4B5FD]/85 leading-relaxed max-w-sm">
+              {t('footer.description')}
             </p>
+
+            {/* Crawlable en / es / fr / pt Locale Switcher */}
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <Globe className="w-3.5 h-3.5 text-[#22D3EE]" aria-hidden="true" />
+              {enabledLanguages.map((lang) => {
+                const href = lang.code === 'en' ? '/' : `/?lang=${lang.code}`;
+                const active = locale === lang.code;
+                return (
+                  <a
+                    key={lang.code}
+                    href={withBasePath(href)}
+                    hrefLang={lang.code}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setLocale(lang.code);
+                    }}
+                    className={`px-2 py-0.5 text-xs font-mono border transition-colors ${
+                      active
+                        ? 'bg-[#FF2A85]/25 border-[#FF2A85]/70 text-white font-bold'
+                        : 'bg-[#130B24]/80 border-[#2F1F4D] text-[#C4B5FD] hover:text-white hover:border-[#22D3EE]/50'
+                    }`}
+                  >
+                    {lang.label} · {lang.nativeName}
+                  </a>
+                );
+              })}
+            </div>
           </div>
 
           <div className="md:col-span-3 space-y-3">
-            <div className="text-xs font-bold uppercase tracking-wider text-[#F5F5F5]">
-              Digital Keys
+            <div className="text-xs font-bold uppercase tracking-wider text-[#FF8A3D]">
+              {t('footer.digitalKeysHeading')}
             </div>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/keys" className="hover:text-[#F5F5F5]">
-                  All Regional Keys
+                <Link href="/keys" className="hover:text-[#F8F5FF] transition-colors">
+                  {t('footer.allRegionalKeys')}
                 </Link>
               </li>
               <li>
-                <Link href="/keys/ps5-us-standard" className="hover:text-[#F5F5F5]">
-                  PlayStation 5 Keys
+                <Link
+                  href="/keys/ps5-us-standard"
+                  className="hover:text-[#F8F5FF] transition-colors"
+                >
+                  {t('footer.ps5Keys')}
                 </Link>
               </li>
               <li>
                 <Link
                   href="/keys/xbox-series-x-us-standard"
-                  className="hover:text-[#F5F5F5]"
+                  className="hover:text-[#F8F5FF] transition-colors"
                 >
-                  Xbox Series X|S Keys
+                  {t('footer.xboxKeys')}
                 </Link>
               </li>
               <li>
-                <Link href="/keys/ps5-global-preload" className="hover:text-[#F5F5F5]">
-                  Pre-Load Access
+                <Link
+                  href="/keys/ps5-global-preload"
+                  className="hover:text-[#F8F5FF] transition-colors"
+                >
+                  {t('footer.preloadAccess')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div className="md:col-span-2 space-y-3">
-            <div className="text-xs font-bold uppercase tracking-wider text-[#F5F5F5]">
-              Archive
+            <div className="text-xs font-bold uppercase tracking-wider text-[#22D3EE]">
+              {t('footer.archiveHeading')}
             </div>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/official-media" className="hover:text-[#F5F5F5]">
-                  4K Gallery
+                <Link
+                  href="/official-media"
+                  className="hover:text-[#F8F5FF] transition-colors"
+                >
+                  {t('nav.gallery4k')}
                 </Link>
               </li>
               <li>
-                <Link href="/mods" className="hover:text-[#F5F5F5]">
-                  Mods Directory
+                <Link href="/mods" className="hover:text-[#F8F5FF] transition-colors">
+                  {t('nav.mods')}
                 </Link>
               </li>
               <li>
-                <Link href="/gameplay" className="hover:text-[#F5F5F5]">
-                  Gameplay
+                <Link
+                  href="/gameplay"
+                  className="hover:text-[#F8F5FF] transition-colors"
+                >
+                  {t('nav.gameplay')}
                 </Link>
               </li>
               <li>
-                <Link href="/credits" className="hover:text-[#F5F5F5]">
-                  Credits
+                <Link
+                  href="/credits"
+                  className="hover:text-[#F8F5FF] transition-colors"
+                >
+                  {t('nav.credits')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div className="md:col-span-2 space-y-3">
-            <div className="text-xs font-bold uppercase tracking-wider text-[#F5F5F5]">
-              Crawlers
+            <div className="text-xs font-bold uppercase tracking-wider text-[#FF2A85]">
+              {t('footer.crawlersHeading')}
             </div>
             <ul className="space-y-2 text-sm font-mono">
               <li>
-                <Link href="/sitemap-explorer" className="hover:text-[#F5F5F5]">
-                  Inspector
+                <Link
+                  href="/sitemap-explorer"
+                  className="hover:text-[#F8F5FF] transition-colors"
+                >
+                  {t('nav.sitemap')}
                 </Link>
               </li>
               <li>
@@ -99,7 +153,7 @@ export function SiteFooter() {
                   href={withBasePath('/sitemap.xml')}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#E11D48] hover:underline"
+                  className="text-[#22D3EE] hover:underline"
                 >
                   /sitemap.xml
                 </a>
@@ -109,7 +163,7 @@ export function SiteFooter() {
                   href={withBasePath('/robots.txt')}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#F5F5F5]"
+                  className="hover:text-[#F8F5FF] transition-colors"
                 >
                   /robots.txt
                 </a>
@@ -118,19 +172,17 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-[#737373]">
+        <div className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-[#A78BFA]/80">
           <div className="flex items-start gap-2.5 max-w-3xl">
             <ShieldAlert
-              className="w-4 h-4 text-[#A3A3A3] shrink-0 mt-0.5"
+              className="w-4 h-4 text-[#FF8A3D] shrink-0 mt-0.5"
               aria-hidden="true"
             />
-            <p className="leading-relaxed">
-              Independent community directory. Not affiliated with, endorsed by, or
-              connected to Rockstar Games, Take-Two Interactive, Sony Interactive
-              Entertainment, or Microsoft Xbox.
-            </p>
+            <p className="leading-relaxed">{t('footer.disclaimer')}</p>
           </div>
-          <span className="font-mono shrink-0">© 2026 {SITE_CONFIG.name}</span>
+          <span className="font-mono shrink-0 text-[#C4B5FD]">
+            © 2026 {SITE_CONFIG.name}
+          </span>
         </div>
       </div>
     </footer>

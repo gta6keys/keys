@@ -40,7 +40,7 @@ export function ViceArtworkCanvas({
 
   return (
     <div
-      className={`${positionClass} overflow-hidden bg-[#0A0A0A] ${className}`}
+      className={`${positionClass} overflow-hidden bg-[#090514] ${className}`}
       aria-label={label || `${theme} artwork`}
     >
       {!imgError && resolvedImage ? (
@@ -63,10 +63,12 @@ export function ViceArtworkCanvas({
         </svg>
       )}
 
-      {/* Flat high-contrast scrim for brutalist legibility while keeping game photos clear */}
+      {/* Vice City atmospheric scrim for crisp contrast while keeping game photos vibrant */}
       <div
         className={`absolute inset-0 pointer-events-none ${
-          theme === 'hero-vista' ? 'bg-black/75' : 'bg-black/35'
+          theme === 'hero-vista'
+            ? 'bg-gradient-to-t from-[#090514]/85 via-[#090514]/55 to-[#FF2A85]/15'
+            : 'bg-gradient-to-t from-[#090514]/55 via-transparent to-[#22D3EE]/10'
         }`}
       />
     </div>

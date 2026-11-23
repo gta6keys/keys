@@ -1,10 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { Globe, Menu, X } from 'lucide-react';
 import { SITE_CONFIG } from '@/lib/site-config';
+import { transitionHeaderOverlay } from '@/lib/state-machines';
+import { withBasePath } from '@/lib/utils';
+import { useI18n } from './language-provider';
 import { ContentLockerModal } from './content-locker-modal';
 
 interface SiteHeaderProps {
@@ -12,24 +15,29 @@ interface SiteHeaderProps {
 }
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Digital Keys' },
-  { href: '/keys', label: 'Keys Directory' },
-  { href: '/official-media', label: '4K Gallery' },
-  { href: '/mods', label: 'Mods' },
-  { href: '/gameplay', label: 'Gameplay' },
-  { href: '/credits', label: 'Credits' },
-];
+  { href: '/', labelKey: 'nav.digitalKeys' },
+  { href: '/keys', labelKey: 'nav.keysDirectory' },
+  { href: '/official-media', labelKey: 'nav.gallery4k' },
+  { href: '/mods', labelKey: 'nav.mods' },
+  { href: '/gameplay', labelKey: 'nav.gameplay' },
+  { href: '/credits', labelKey: 'nav.credits' },
+] as const;
 
 export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
   const pathname = usePathname() || '/';
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [internalLockerOpen, setInternalLockerOpen] = useState(false);
+  const { locale, languages, setLocale, t } = useI18n();
+  const [overlayState, dispatchOverlay] = useReducer(transitionHeaderOverlay, {
+    status: 'idle',
+  });
+
+  const enabledLanguages = languages.filter((lang) => lang.enabled);
 
   const handleOpenClaim = () => {
     if (onOpenLocker) {
+      dispatchOverlay({ type: 'CLOSE_ALL' });
       onOpenLocker();
     } else {
-      setInternalLockerOpen(true);
+      dispatchOverlay({ type: 'OPEN_CLAIM_MODAL' });
     }
   };
 
@@ -38,16 +46,31 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
+  const mobileMenuOpen = overlayState.status === 'mobile-menu';
+  const internalLockerOpen = overlayState.status === 'claim-modal';
+
   return (
     <>
-      <header className="sticky top-0 z-40 bg-[#0A0A0A] border-b border-[#262626]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
-          {/* Brand */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <span className="inline-flex items-center justify-center w-7 h-7 bg-[#E11D48] text-white font-bold text-xs tracking-tight">
-              VI
-            </span>
-            <span className="text-base font-bold tracking-tight text-[#F5F5F5]">
+      <header
+        data-overlay-state={overlayState.status}
+        className="sticky top-0 z-40 bg-[#090514]/82 backdrop-blur-xl border-b border-[#FF2A85]/25"
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+          {/* Brand Logo (gta6keys.png) */}
+          <Link
+            href="/"
+            aria-label={`${SITE_CONFIG.name} Home`}
+            className="flex items-center gap-2.5 shrink-0 group"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={withBasePath(SITE_CONFIG.logoPath)}
+              alt={`${SITE_CONFIG.name} Vice City Logo`}
+              width={40}
+              height={40}
+              className="h-9 w-auto object-contain drop-shadow-[0_0_10px_rgba(255,42,133,0.45)] group-hover:scale-105 transition-transform"
+            />
+            <span className="font-display text-2xl tracking-wider vice-text-gradient leading-none">
               {SITE_CONFIG.name}
             </span>
           </Link>
@@ -65,66 +88,128 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
                   href={item.href}
                   className={`px-3 py-1.5 text-sm border transition-colors whitespace-nowrap ${
                     active
-                      ? 'text-[#F5F5F5] bg-[#181818] border-[#404040] font-bold'
-                      : 'text-[#A3A3A3] hover:text-[#F5F5F5] border-transparent'
+                      ? 'text-[#F8F5FF] bg-[#FF2A85]/20 border-[#FF2A85]/55 font-semibold shadow-[0_0_16px_rgba(255,42,133,0.2)]'
+                      : 'text-[#C4B5FD] hover:text-[#F8F5FF] hover:bg-[#1C1133]/70 border-transparent'
                   }`}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Right Action & Mobile Trigger */}
+          {/* Right Controls: Language Switcher (en/es/fr/pt), Claim CTA & Mobile Trigger */}
           <div className="flex items-center gap-2 shrink-0">
+            <div
+              role="group"
+              aria-label={t('nav.language')}
+              className="hidden sm:flex items-center bg-[#130B24]/90 border border-[#2F1F4D] p-0.5"
+            >
+              <Globe
+                className="w-3.5 h-3.5 text-[#22D3EE] mx-1.5 shrink-0"
+                aria-hidden="true"
+              />
+              {enabledLanguages.map((lang) => {
+                const isSelected = locale === lang.code;
+                return (
+                  <button
+                    key={lang.code}
+                    type="button"
+                    data-locale={lang.code}
+                    aria-pressed={isSelected}
+                    title={lang.nativeName}
+                    onClick={() => setLocale(lang.code)}
+                    className={`px-2 py-1 text-[11px] font-mono font-bold transition-colors cursor-pointer ${
+                      isSelected
+                        ? 'bg-gradient-to-r from-[#FF2A85] to-[#FF8A3D] text-white'
+                        : 'text-[#C4B5FD] hover:text-white'
+                    }`}
+                  >
+                    {lang.label}
+                  </button>
+                );
+              })}
+            </div>
+
             <button
               type="button"
               onClick={handleOpenClaim}
-              className="px-4 py-2 text-xs sm:text-sm font-bold text-white bg-[#E11D48] hover:bg-[#BE123C] border border-[#E11D48] transition-colors cursor-pointer whitespace-nowrap"
+              className="vice-btn-primary px-4 py-2 text-xs sm:text-sm font-bold cursor-pointer whitespace-nowrap"
             >
-              Claim Code
+              {t('nav.claimCode')}
             </button>
 
             <button
               type="button"
-              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              onClick={() => dispatchOverlay({ type: 'TOGGLE_MOBILE_MENU' })}
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
-              className="lg:hidden inline-flex items-center justify-center w-9 h-9 bg-[#121212] border border-[#262626] text-[#F5F5F5] cursor-pointer"
+              className="lg:hidden inline-flex items-center justify-center w-9 h-9 bg-[#130B24] border border-[#FF2A85]/35 text-[#F8F5FF] cursor-pointer"
             >
               {mobileMenuOpen ? (
-                <X className="w-4 h-4" aria-hidden="true" />
+                <X className="w-4 h-4 text-[#22D3EE]" aria-hidden="true" />
               ) : (
-                <Menu className="w-4 h-4" aria-hidden="true" />
+                <Menu className="w-4 h-4 text-[#FF8A3D]" aria-hidden="true" />
               )}
             </button>
           </div>
         </div>
 
-        {/* Flat Mobile Navigation */}
+        {/* Mobile Navigation + Language Selector */}
         {mobileMenuOpen && (
           <nav
             aria-label="Mobile Navigation"
-            className="lg:hidden border-t border-[#262626] bg-[#0A0A0A]"
+            className="lg:hidden border-t border-[#FF2A85]/25 bg-[#090514]/95 backdrop-blur-xl"
           >
-            <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 divide-x divide-y divide-[#262626]">
+            <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 divide-x divide-y divide-[#2F1F4D]">
               {NAV_ITEMS.map((item) => {
                 const active = isRouteActive(item.href);
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => dispatchOverlay({ type: 'CLOSE_ALL' })}
                     className={`px-4 py-3 text-sm ${
                       active
-                        ? 'bg-[#181818] text-[#F5F5F5] font-bold'
-                        : 'text-[#A3A3A3] hover:text-[#F5F5F5]'
+                        ? 'bg-[#FF2A85]/20 text-[#F8F5FF] font-semibold'
+                        : 'text-[#C4B5FD] hover:text-[#F8F5FF]'
                     }`}
                   >
-                    {item.label}
+                    {t(item.labelKey)}
                   </Link>
                 );
               })}
+            </div>
+
+            <div className="sm:hidden border-t border-[#2F1F4D] px-4 py-3 flex items-center justify-between gap-2">
+              <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[#22D3EE]">
+                <Globe className="w-3.5 h-3.5" aria-hidden="true" />
+                <span>{t('nav.language')}</span>
+              </span>
+              <div className="flex items-center gap-1">
+                {enabledLanguages.map((lang) => {
+                  const isSelected = locale === lang.code;
+                  return (
+                    <button
+                      key={lang.code}
+                      type="button"
+                      data-locale={lang.code}
+                      aria-pressed={isSelected}
+                      onClick={() => {
+                        setLocale(lang.code);
+                        dispatchOverlay({ type: 'CLOSE_ALL' });
+                      }}
+                      className={`px-2.5 py-1 text-xs font-mono font-bold border cursor-pointer ${
+                        isSelected
+                          ? 'bg-gradient-to-r from-[#FF2A85] to-[#FF8A3D] text-white border-[#FF8A3D]/60'
+                          : 'bg-[#130B24] text-[#C4B5FD] border-[#2F1F4D]'
+                      }`}
+                    >
+                      {lang.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </nav>
         )}
@@ -133,8 +218,9 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
       {!onOpenLocker && (
         <ContentLockerModal
           isOpen={internalLockerOpen}
-          onClose={() => setInternalLockerOpen(false)}
+          onClose={() => dispatchOverlay({ type: 'CLOSE_ALL' })}
           packageTitle="Grand Theft Auto VI — Digital Code Allocation"
+          theme="vice"
         />
       )}
     </>

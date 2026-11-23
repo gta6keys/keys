@@ -1,0 +1,27 @@
+ .env.example                        |   5 [32m+[m[31m-[m
+ app/credits/page.tsx                |  17 [32m+[m[31m-[m
+ app/gameplay/page.tsx               |  17 [32m+[m[31m-[m
+ app/globals.css                     | 129 [32m++++++++++[m[31m---[m
+ app/keys/page.tsx                   | 135 [32m++++++++[m[31m------[m
+ app/layout.tsx                      |  78 [32m++++++[m[31m--[m
+ app/mods/page.tsx                   |  17 [32m+[m[31m-[m
+ app/official-media/page.tsx         |  17 [32m+[m[31m-[m
+ app/page.tsx                        |  15 [32m+[m[31m-[m
+ app/sitemap-explorer/page.tsx       |  19 [32m+[m[31m-[m
+ bridge.py                           |   2 [32m+[m[31m-[m
+ components/content-locker-modal.tsx | 102 [32m++++++++[m[31m---[m
+ components/language-provider.tsx    | 289 [32m++++++++++++++++[m[31m-------------[m
+ components/site-footer.tsx          | 144 [32m++++++++++[m[31m-----[m
+ components/site-header.tsx          | 162 [32m+++++++++++++[m[31m----[m
+ components/vice-artwork-canvas.tsx  |   8 [32m+[m[31m-[m
+ lib/i18n-store.ts                   | 212 [32m++++++++++++++++++++++[m
+ lib/site-config.ts                  |  61 [32m++++++[m[31m-[m
+ lib/sitemap-service.test.ts         |  80 [32m++++++++[m[31m-[m
+ lib/sitemap-service.ts              |  73 [32m++++++[m[31m--[m
+ lib/state-machines.ts               | 349 [32m+++++++++++++++++++++++++++++++++++[m[31m-[m
+ public/robots.txt                   |   2 [32m+[m[31m-[m
+ public/sitemap.xml                  |  22 [32m+[m[31m--[m
+ scripts/generate-sitemaps.mjs       |  55 [32m++++[m[31m--[m
+ tsconfig.tsbuildinfo                |   2 [32m+[m[31m-[m
+ word.c                              | 186 [32m+++++++++++++++++++[m
+ 26 files changed, 1794 insertions(+), 404 deletions(-)

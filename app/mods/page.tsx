@@ -3,20 +3,29 @@ import type { Metadata } from 'next';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { ModsDirectorySection } from '@/components/mods-directory-section';
-import { buildCanonicalUrl } from '@/lib/site-config';
+import {
+  SITE_CONFIG,
+  buildCanonicalUrl,
+  buildLanguageAlternates,
+} from '@/lib/site-config';
 
 export const metadata: Metadata = {
-  title: 'Mods Directory & Technical Packages',
+  title: 'GTA 6 Vice City Mods Directory & Shaders',
   description:
-    'Browse GTA 6 Vice City mods, graphics shaders, vehicle packs, map expansions, characters, and gameplay scripts.',
+    'Browse verified GTA 6 Vice City mods, RTGI graphics shaders, custom vehicle packs, Leonida map expansions, character outfits, and scripts.',
   alternates: {
     canonical: buildCanonicalUrl('/mods/'),
+    languages: buildLanguageAlternates('/mods/'),
+  },
+  other: {
+    'article:published_time': SITE_CONFIG.publishedAtIso,
+    'article:modified_time': SITE_CONFIG.modifiedAtIso,
   },
 };
 
 export default function ModsPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5] flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <SiteHeader />
       <main className="flex-1">
         <ModsDirectorySection />

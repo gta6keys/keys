@@ -1,6 +1,6 @@
 import { INITIAL_MODS } from './mods-repository';
 import { getAllPseoKeyPages } from './pseo-catalog';
-import { SITE_CONFIG } from './site-config';
+import { SITE_CONFIG, SUPPORTED_LOCALES } from './site-config';
 import { SitemapEntityType, SitemapShardInfo, SitemapUrlEntry } from './types';
 
 export function escapeXml(unsafe: string): string {
@@ -49,20 +49,55 @@ export function generateCatalogSitemapEntries(
 
   // 1. Core Standalone Routes (Shard 1 -> /sitemaps/sitemap-core.xml)
   const coreRoutes = [
-    { path: '/', priority: '1.0', freq: 'daily' as const, title: 'gta6keys — GTA 6 Digital Keys Hub' },
-    { path: '/keys/', priority: '0.95', freq: 'daily' as const, title: 'GTA 6 Regional Digital Keys Directory' },
-    { path: '/official-media/', priority: '0.8', freq: 'weekly' as const, title: 'Official 4K Media & Lore Archive' },
-    { path: '/mods/', priority: '0.8', freq: 'weekly' as const, title: 'Vice City Mods Directory' },
-    { path: '/gameplay/', priority: '0.8', freq: 'weekly' as const, title: 'YouTube GTA 6 Gameplay & Engine Analysis' },
-    { path: '/credits/', priority: '0.7', freq: 'weekly' as const, title: 'Creator Credits & Attribution Ledger' },
-    { path: '/sitemap-explorer/', priority: '0.6', freq: 'weekly' as const, title: 'Static Multi-Shard XML Sitemap Inspector' },
+    {
+      path: '/',
+      priority: '1.0',
+      freq: 'daily' as const,
+      title: 'gta6keys — GTA 6 Digital Keys Hub',
+    },
+    {
+      path: '/keys/',
+      priority: '0.95',
+      freq: 'daily' as const,
+      title: 'GTA 6 Regional Digital Keys Directory',
+    },
+    {
+      path: '/official-media/',
+      priority: '0.8',
+      freq: 'weekly' as const,
+      title: 'Official 4K Media & Lore Archive',
+    },
+    {
+      path: '/mods/',
+      priority: '0.8',
+      freq: 'weekly' as const,
+      title: 'Vice City Mods Directory',
+    },
+    {
+      path: '/gameplay/',
+      priority: '0.8',
+      freq: 'weekly' as const,
+      title: 'YouTube GTA 6 Gameplay & Engine Analysis',
+    },
+    {
+      path: '/credits/',
+      priority: '0.7',
+      freq: 'weekly' as const,
+      title: 'Creator Credits & Attribution Ledger',
+    },
+    {
+      path: '/sitemap-explorer/',
+      priority: '0.6',
+      freq: 'weekly' as const,
+      title: 'Static Multi-Shard XML Sitemap Inspector',
+    },
   ];
 
   for (const route of coreRoutes) {
     entries.push({
       loc: `${baseUrl}${route.path}`,
       path: route.path,
-      lastmod: '2026-11-22',
+      lastmod: '2026-11-23',
       changefreq: route.freq,
       priority: route.priority,
       entityType: 'core',
@@ -131,9 +166,7 @@ export function getSitemapShardsSummary(
     .sort(([a], [b]) => a - b)
     .map(([shardId, list]) => {
       const fileName =
-        shardId === 1
-          ? 'sitemap-core.xml'
-          : `sitemap-keys-${shardId - 1}.xml`;
+        shardId === 1 ? 'sitemap-core.xml' : `sitemap-keys-${shardId - 1}.xml`;
 
       return {
         shardId,
@@ -146,11 +179,23 @@ export function getSitemapShardsSummary(
     });
 }
 
+function buildHreflangXmlNodes(loc: string): string {
+  const nodes = SUPPORTED_LOCALES.map((locale) => {
+    const href = locale === 'en' ? loc : `${loc}?lang=${locale}`;
+    return `    <xhtml:link rel="alternate" hreflang="${locale}" href="${escapeXml(href)}" />`;
+  });
+  nodes.push(
+    `    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(loc)}" />`
+  );
+  return nodes.join('\n');
+}
+
 export function buildUrlSetXml(entries: SitemapUrlEntry[]): string {
   const urlNodes = entries
     .map(
       (entry) => `  <url>
     <loc>${escapeXml(entry.loc)}</loc>
+${buildHreflangXmlNodes(entry.loc)}
     <lastmod>${escapeXml(entry.lastmod)}</lastmod>
     <changefreq>${entry.changefreq}</changefreq>
     <priority>${escapeXml(entry.priority)}</priority>
@@ -159,14 +204,14 @@ export function buildUrlSetXml(entries: SitemapUrlEntry[]): string {
     .join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urlNodes}
 </urlset>`;
 }
 
 export function buildSitemapIndexXml(
   shards: SitemapShardInfo[],
-  lastmod = '2026-11-22'
+  lastmod = '2026-11-23'
 ): string {
   const sitemapNodes = shards
     .map(

@@ -1,9 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const DEFAULT_SITE_URL = 'https://gta6keys.github.io/gta6keys';
+const DEFAULT_SITE_URL = 'https://gta6keys.github.io';
 const SHARD_SIZE = 500;
-const BUILD_DATE = '2026-11-22';
+const BUILD_DATE = '2026-11-23';
+const SUPPORTED_LOCALES = ['en', 'es', 'fr', 'pt'];
 
 function loadEnvSiteUrl() {
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
@@ -46,11 +47,23 @@ function toCanonical(routePath) {
   return `${SITE_URL}${withTrailing}`;
 }
 
+function buildHreflangNodes(canonicalLoc) {
+  const links = SUPPORTED_LOCALES.map((locale) => {
+    const href = locale === 'en' ? canonicalLoc : `${canonicalLoc}?lang=${locale}`;
+    return `    <xhtml:link rel="alternate" hreflang="${locale}" href="${escapeXml(href)}" />`;
+  });
+  links.push(
+    `    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(canonicalLoc)}" />`
+  );
+  return links.join('\n');
+}
+
 function buildUrlSetXml(urls) {
   const nodes = urls
     .map(
       (item) => `  <url>
     <loc>${escapeXml(item.loc)}</loc>
+${buildHreflangNodes(item.loc)}
     <lastmod>${escapeXml(item.lastmod)}</lastmod>
     <changefreq>${item.changefreq}</changefreq>
     <priority>${escapeXml(item.priority)}</priority>
@@ -59,7 +72,7 @@ function buildUrlSetXml(urls) {
     .join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${nodes}
 </urlset>
 `;
@@ -86,11 +99,31 @@ ${nodes}
 const CORE_URLS = [
   { path: '/', lastmod: BUILD_DATE, changefreq: 'daily', priority: '1.0' },
   { path: '/keys/', lastmod: BUILD_DATE, changefreq: 'daily', priority: '0.95' },
-  { path: '/official-media/', lastmod: BUILD_DATE, changefreq: 'weekly', priority: '0.8' },
+  {
+    path: '/official-media/',
+    lastmod: BUILD_DATE,
+    changefreq: 'weekly',
+    priority: '0.8',
+  },
   { path: '/mods/', lastmod: BUILD_DATE, changefreq: 'weekly', priority: '0.8' },
-  { path: '/gameplay/', lastmod: BUILD_DATE, changefreq: 'weekly', priority: '0.8' },
-  { path: '/credits/', lastmod: BUILD_DATE, changefreq: 'weekly', priority: '0.7' },
-  { path: '/sitemap-explorer/', lastmod: BUILD_DATE, changefreq: 'weekly', priority: '0.6' },
+  {
+    path: '/gameplay/',
+    lastmod: BUILD_DATE,
+    changefreq: 'weekly',
+    priority: '0.8',
+  },
+  {
+    path: '/credits/',
+    lastmod: BUILD_DATE,
+    changefreq: 'weekly',
+    priority: '0.7',
+  },
+  {
+    path: '/sitemap-explorer/',
+    lastmod: BUILD_DATE,
+    changefreq: 'weekly',
+    priority: '0.6',
+  },
   {
     path: '/mods/shaders/vice-city-sunset-rtgi-path-tracer/',
     lastmod: '2026-11-04',
@@ -127,10 +160,7 @@ const CORE_URLS = [
     changefreq: 'weekly',
     priority: '0.7',
   },
-].map((entry) => ({
-  ...entry,
-  loc: toCanonical(entry.path),
-}));
+].map((entry) => ({ ...entry, loc: toCanonical(entry.path) }));
 
 // Must match lib/pseo-catalog.ts dimensions verbatim (4 x 20 x 5 x 5 = 2,000 pages)
 const PLATFORMS = ['ps5', 'ps5-pro', 'xbox-series-x', 'xbox-series-s'];
@@ -193,7 +223,6 @@ const sitemapsDir = path.join(publicDir, 'sitemaps');
 
 fs.mkdirSync(sitemapsDir, { recursive: true });
 
-// Remove any old generated shard XML files
 for (const existing of fs.readdirSync(sitemapsDir)) {
   if (existing.endsWith('.xml')) {
     fs.unlinkSync(path.join(sitemapsDir, existing));
@@ -241,5 +270,5 @@ fs.writeFileSync(path.join(publicDir, 'robots.txt'), robotsContent, 'utf-8');
 
 const totalUrls = CORE_URLS.length + pseoUrls.length;
 console.log(
-  `[sitemaps] Generated ${shardEndpoints.length} static XML shards covering ${totalUrls} canonical URLs -> public/sitemap.xml`
+  `[sitemaps] Generated ${shardEndpoints.length} static XML shards (en/es/fr/pt hreflang) covering ${totalUrls} canonical URLs -> public/sitemap.xml`
 );

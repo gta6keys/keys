@@ -567,7 +567,7 @@ class BridgeHandler(http.server.BaseHTTPRequestHandler):
         results = []
         for op in ops:
             fp = op.get("filePath") or op.get("path") or op.get("file") or ""
-            
+
             try:
                 full = safe_resolve(fp)
             except ValueError as e:

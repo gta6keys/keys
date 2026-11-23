@@ -3,20 +3,29 @@ import type { Metadata } from 'next';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { RockstarOfficialGallerySection } from '@/components/rockstar-official-gallery-section';
-import { buildCanonicalUrl } from '@/lib/site-config';
+import {
+  SITE_CONFIG,
+  buildCanonicalUrl,
+  buildLanguageAlternates,
+} from '@/lib/site-config';
 
 export const metadata: Metadata = {
-  title: 'Official 4K Launch Gallery & Lore Archive',
+  title: 'GTA 6 Official 4K Gallery & Lore Archive',
   description:
-    'Explore 4K GTA 6 Vice City reference captures, edition details, artwork, and Leonida lore in this independent archive.',
+    'Explore uncompressed 4K GTA 6 Vice City reference captures, official edition packages, Leonida lore details, and artwork in this archive.',
   alternates: {
     canonical: buildCanonicalUrl('/official-media/'),
+    languages: buildLanguageAlternates('/official-media/'),
+  },
+  other: {
+    'article:published_time': SITE_CONFIG.publishedAtIso,
+    'article:modified_time': SITE_CONFIG.modifiedAtIso,
   },
 };
 
 export default function OfficialMediaPage() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5] flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <SiteHeader />
       <main className="flex-1">
         <RockstarOfficialGallerySection />

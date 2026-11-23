@@ -15,8 +15,18 @@ import {
   filterAndSortMods,
   validateModSubmission,
 } from './mods-repository';
+import {
+  createInitialKeysDirectoryState,
+  resolveInitialLocale,
+  transitionAccordion,
+  transitionHeaderOverlay,
+  transitionKeyClaimTerminal,
+  transitionKeysDirectory,
+  transitionLockerModal,
+} from './state-machines';
+import { DEFAULT_LANGUAGES } from './i18n-store';
 
-const TEST_BASE = 'https://gta6keys.github.io/gta6keys';
+const TEST_BASE = 'https://gta6keys.github.io';
 
 test('escapeXml properly escapes XML special characters', () => {
   const raw = `${TEST_BASE}/mods?a=1&b="2"&c=<tag>`;
@@ -60,12 +70,21 @@ test('dynamically added pages immediately update the generated sitemap entries',
   );
 });
 
-test('buildUrlSetXml and buildSitemapIndexXml produce valid Sitemap 0.9 XML', () => {
+test('buildUrlSetXml and buildSitemapIndexXml produce valid Sitemap 0.9 XML with hreflang alternates', () => {
   const entries = generateCatalogSitemapEntries(TEST_BASE, 20);
   const urlsetXml = buildUrlSetXml(entries.slice(0, 5));
   assert.ok(urlsetXml.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
-  assert.ok(urlsetXml.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'));
+  assert.ok(
+    urlsetXml.includes(
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+    )
+  );
   assert.ok(urlsetXml.includes(`<loc>${TEST_BASE}/</loc>`));
+  assert.ok(urlsetXml.includes('hreflang="en"'));
+  assert.ok(urlsetXml.includes('hreflang="es"'));
+  assert.ok(urlsetXml.includes('hreflang="fr"'));
+  assert.ok(urlsetXml.includes('hreflang="pt"'));
+  assert.ok(urlsetXml.includes('hreflang="x-default"'));
 
   const shards = getSitemapShardsSummary(entries, TEST_BASE);
   const indexXml = buildSitemapIndexXml(shards);
@@ -123,5 +142,60 @@ test('validateModSubmission enforces required fields and accepts valid input', (
   assert.equal(
     createSlugFromTitle('Vice Neon Palm Overhaul!'),
     'vice-neon-palm-overhaul'
+  );
+});
+
+test('explicit UI finite state machines maintain deterministic invariants', () => {
+  // Locker Modal FSM
+  let modal = transitionLockerModal({ status: 'closed' }, { type: 'OPEN' });
+  assert.equal(modal.status, 'loading');
+  modal = transitionLockerModal(modal, { type: 'TIMEOUT_FALLBACK' });
+  assert.equal(modal.status, 'fallback');
+  modal = transitionLockerModal(modal, { type: 'IFRAME_LOADED' });
+  assert.equal(modal.status, 'ready');
+  modal = transitionLockerModal(modal, { type: 'CLOSE' });
+  assert.equal(modal.status, 'closed');
+
+  // Key Claim Terminal FSM
+  let terminal = transitionKeyClaimTerminal(
+    { status: 'configuring', platform: 'ps5', regionCode: 'us', editionId: 'standard' },
+    { type: 'OPEN_VERIFICATION' }
+  );
+  assert.equal(terminal.status, 'verifying');
+  terminal = transitionKeyClaimTerminal(terminal, {
+    type: 'SELECT_PLATFORM',
+    platform: 'xbox-series-x',
+  });
+  assert.equal(terminal.status, 'configuring');
+  assert.equal(terminal.platform, 'xbox-series-x');
+
+  // Keys Directory FSM resets pagination on filter change
+  let dir = createInitialKeysDirectoryState(24);
+  dir = transitionKeysDirectory(dir, { type: 'LOAD_MORE' });
+  assert.equal(dir.visibleLimit, 48);
+  dir = transitionKeysDirectory(dir, { type: 'SET_REGION', regionCode: 'fr' });
+  assert.equal(dir.visibleLimit, 24);
+  assert.equal(dir.regionCode, 'fr');
+
+  // Header Overlay FSM enforces mutual exclusivity
+  let overlay = transitionHeaderOverlay({ status: 'idle' }, { type: 'TOGGLE_MOBILE_MENU' });
+  assert.equal(overlay.status, 'mobile-menu');
+  overlay = transitionHeaderOverlay(overlay, { type: 'OPEN_CLAIM_MODAL' });
+  assert.equal(overlay.status, 'claim-modal');
+
+  // Accordion FSM
+  let acc = transitionAccordion({ status: 'collapsed', openId: null }, { type: 'TOGGLE_ITEM', id: 'q1' });
+  assert.equal(acc.status, 'expanded');
+  acc = transitionAccordion(acc, { type: 'TOGGLE_ITEM', id: 'q1' });
+  assert.equal(acc.status, 'collapsed');
+
+  // Locale resolution prefers URL ?lang over storage
+  assert.equal(
+    resolveInitialLocale({ urlLang: 'fr', storedLocale: 'es', languages: DEFAULT_LANGUAGES }),
+    'fr'
+  );
+  assert.equal(
+    resolveInitialLocale({ urlLang: 'invalid', storedLocale: 'pt', languages: DEFAULT_LANGUAGES }),
+    'pt'
   );
 });

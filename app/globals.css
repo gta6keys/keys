@@ -2,59 +2,132 @@
 @import "tw-animate-css";
 
 @theme inline {
-  --font-display: Arial, Helvetica, sans-serif;
-  --font-sans: Arial, Helvetica, sans-serif;
+  --font-display: 'Pricedown Bl', 'Pricedown', Impact, 'Arial Black', sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --color-obsidian: #0a0a0a;
-  --color-surface: #121212;
-  --color-surface-elevated: #181818;
-  --color-border-hairline: #262626;
-  --color-accent: #e11d48;
+  --color-obsidian: #090514;
+  --color-surface: #130b24;
+  --color-surface-elevated: #1c1133;
+  --color-border-hairline: #2f1f4d;
+  --color-accent: #ff2a85;
+  --color-vice-pink: #ff2a85;
+  --color-vice-orange: #ff8a3d;
+  --color-vice-cyan: #22d3ee;
+  --color-vice-violet: #a855f7;
 }
 
 @layer base {
   html {
-    background-color: #0a0a0a;
-    color: #f5f5f5;
-    font-family: Arial, Helvetica, sans-serif;
+    background-color: #090514;
+    color: #f8f5ff;
+    font-family: var(--font-sans);
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: #0a0a0a;
-    color: #f5f5f5;
-    font-family: Arial, Helvetica, sans-serif;
+    background-color: transparent;
+    color: #f8f5ff;
+    font-family: var(--font-sans);
     overflow-x: clip;
   }
 
-  ::selection {
-    background-color: #e11d48;
-    color: #ffffff;
+  h1,
+    h2 {
+      font-family: var(--font-display);
+      font-weight: 400 !important;
+      letter-spacing: 0.04em;
+      text-shadow: 0 3px 18px rgba(9, 5, 20, 0.72);
+    }
+
+    ::selection {
+      background-color: #ff2a85;
+      color: #ffffff;
+    }
   }
+
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 400 !important;
+    letter-spacing: 0.04em;
+  }
+
+/* Full-bleed fixed Vice City GTA VI atmospheric backdrop */
+.vice-backdrop-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: #090514;
 }
 
-/* Flat high-contrast monochrome ground (zero gradients, zero glow) */
+.vice-backdrop-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 14%, rgba(255, 42, 133, 0.28) 0%, transparent 48%),
+    radial-gradient(circle at 88% 18%, rgba(34, 211, 238, 0.20) 0%, transparent 46%),
+    radial-gradient(circle at 52% 92%, rgba(255, 138, 61, 0.22) 0%, transparent 52%),
+    linear-gradient(180deg, rgba(9, 5, 20, 0.66) 0%, rgba(18, 8, 36, 0.76) 48%, rgba(9, 5, 20, 0.90) 100%);
+}
+
+/* Translucent Vice City ground so the full GTA VI artwork breathes through */
 .site-ambient-bg,
 .vice-city-canvas {
-  background-color: #0a0a0a;
-  background-image: none;
+  background-color: rgba(9, 5, 20, 0.42);
 }
 
-/* Flat editorial container with single-pixel border */
-.editorial-surface {
-  background-color: #121212;
-  border: 1px solid #262626;
-  box-shadow: none;
+/* Vice City glass surface */
+.editorial-surface,
+.vice-surface {
+  background-color: rgba(19, 11, 36, 0.84);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 42, 133, 0.24);
+  box-shadow: 0 12px 36px rgba(5, 2, 14, 0.45);
 }
 
-/* Plain high-contrast heading color (no decorative text gradients) */
+/* Vice City sunset gradient text accent */
 .vice-text-gradient {
-  background: none;
-  color: #f5f5f5;
+  background: linear-gradient(90deg, #ff8a3d 0%, #ff2a85 52%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-/* Motion disabled for restrained editorial presentation */
+/* Primary Vice City neon sunset CTA */
+.vice-btn-primary {
+  background-image: linear-gradient(95deg, #ff2a85 0%, #c026d3 55%, #ff8a3d 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 138, 61, 0.45);
+  box-shadow: 0 0 24px rgba(255, 42, 133, 0.32);
+  transition: filter 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+.vice-btn-primary:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 32px rgba(255, 42, 133, 0.5);
+}
+
+.vice-card {
+  background-color: rgba(19, 11, 36, 0.78);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+}
+
+.vice-card-interactive {
+  background-color: rgba(19, 11, 36, 0.78);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.vice-card-interactive:hover {
+  background-color: rgba(28, 17, 51, 0.88);
+  border-color: rgba(255, 42, 133, 0.6);
+  box-shadow: 0 0 24px rgba(255, 42, 133, 0.16);
+}
+
 .cover-stage-float,
 .gta-cover-animate,
 .gta-cover-scanline {
