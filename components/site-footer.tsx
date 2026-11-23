@@ -25,11 +25,10 @@ export function SiteFooter() {
               <img
                 src={withBasePath(SITE_CONFIG.logoPath)}
                 alt={`${SITE_CONFIG.name} Vice City Logo`}
-                width={150}
-                height={50}
-                className="h-11 w-auto object-contain vice-logo-glow"
+                width={64}
+                height={64}
+                className="h-12 w-12 object-contain vice-logo-glow"
               />
-              <span className="sr-only">{SITE_CONFIG.name}</span>
             </Link>
             <p className="text-sm text-[#C4B5FD]/85 leading-relaxed max-w-sm">
               {t('footer.description')}

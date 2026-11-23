@@ -66,11 +66,10 @@ export function SiteHeader({ onOpenLocker }: SiteHeaderProps) {
             <img
               src={withBasePath(SITE_CONFIG.logoPath)}
               alt={`${SITE_CONFIG.name} Vice City Logo`}
-              width={160}
-              height={54}
-              className="h-11 sm:h-12 w-auto object-contain vice-logo-glow"
+              width={64}
+              height={64}
+              className="h-12 sm:h-14 w-12 sm:w-14 object-contain vice-logo-glow"
             />
-            <span className="sr-only">{SITE_CONFIG.name}</span>
           </Link>
 
           {/* Animated Pricedown Primary Navigation */}
